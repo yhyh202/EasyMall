@@ -1,0 +1,10 @@
+# In-memory, disposable local demo only. Never use these credentials in production.
+spring:
+  datasource:
+    url: jdbc:h2:mem:easymall;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000
+    username: sa
+    password: ''
+    driver-class-name: org.h2.Driver
+app:
+  admin-password: DemoAdmin123!
+  seed-data: true

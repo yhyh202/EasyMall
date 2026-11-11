@@ -1,0 +1,1107 @@
+{
+  "startedAt": "2026-11-11T09:38:30.983Z",
+  "timezone": "Asia/Shanghai",
+  "baseUrl": "http://localhost:8080",
+  "integration": {
+    "command": "mvn -B -ntp test",
+    "profile": "demo",
+    "database": "H2 in-memory",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "requests": [
+    {
+      "phase": "collection",
+      "name": "注册新用户",
+      "method": "POST",
+      "path": "/api/auth/register",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "用户登录",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "当前用户",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "管理员登录",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "创建分类",
+      "method": "POST",
+      "path": "/api/admin/categories",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "修改分类",
+      "method": "PUT",
+      "path": "/api/admin/categories/2",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "分类列表",
+      "method": "GET",
+      "path": "/api/categories",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "创建商品",
+      "method": "POST",
+      "path": "/api/admin/products",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "修改商品",
+      "method": "PUT",
+      "path": "/api/admin/products/21",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "入库 20 件",
+      "method": "POST",
+      "path": "/api/admin/products/21/stock",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "幂等入库重放",
+      "method": "POST",
+      "path": "/api/admin/products/21/stock",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "商品搜索分页",
+      "method": "GET",
+      "path": "/api/products",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "商品详情",
+      "method": "GET",
+      "path": "/api/products/21",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "管理商品分页",
+      "method": "GET",
+      "path": "/api/admin/products",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "管理商品详情",
+      "method": "GET",
+      "path": "/api/admin/products/21",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "库存流水",
+      "method": "GET",
+      "path": "/api/admin/products/21/stock-logs",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "创建地址",
+      "method": "POST",
+      "path": "/api/addresses",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "修改地址",
+      "method": "PUT",
+      "path": "/api/addresses/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "地址列表",
+      "method": "GET",
+      "path": "/api/addresses",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "设置购物车",
+      "method": "PUT",
+      "path": "/api/cart/items",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "修改行数量",
+      "method": "PATCH",
+      "path": "/api/cart/items/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "购物车列表",
+      "method": "GET",
+      "path": "/api/cart",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "删除行",
+      "method": "DELETE",
+      "path": "/api/cart/items/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "再次加入购物车",
+      "method": "PUT",
+      "path": "/api/cart/items",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "清空购物车",
+      "method": "DELETE",
+      "path": "/api/cart",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "为购买加入购物车",
+      "method": "PUT",
+      "path": "/api/cart/items",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "下单",
+      "method": "POST",
+      "path": "/api/orders",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "幂等下单重放",
+      "method": "POST",
+      "path": "/api/orders",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "同键不同内容应拒绝",
+      "method": "POST",
+      "path": "/api/orders",
+      "status": 409,
+      "assertions": [
+        {
+          "name": "HTTP 409",
+          "passed": true
+        },
+        {
+          "name": "Business error",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "用户订单分页",
+      "method": "GET",
+      "path": "/api/orders",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "订单详情",
+      "method": "GET",
+      "path": "/api/orders/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "模拟支付",
+      "method": "POST",
+      "path": "/api/orders/1/pay",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "幂等支付重放",
+      "method": "POST",
+      "path": "/api/orders/1/pay",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "支付记录",
+      "method": "GET",
+      "path": "/api/orders/1/payment",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "全站订单分页",
+      "method": "GET",
+      "path": "/api/admin/orders",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "管理订单详情",
+      "method": "GET",
+      "path": "/api/admin/orders/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "管理员发货",
+      "method": "POST",
+      "path": "/api/admin/orders/1/ship",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "用户确认收货",
+      "method": "POST",
+      "path": "/api/orders/1/receive",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "创建待取消订单",
+      "method": "POST",
+      "path": "/api/orders",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "取消并回补库存",
+      "method": "POST",
+      "path": "/api/orders/2/cancel",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "幂等取消重放",
+      "method": "POST",
+      "path": "/api/orders/2/cancel",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        },
+        {
+          "name": "Business state and idempotency",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "普通用户不能访问管理接口",
+      "method": "GET",
+      "path": "/api/admin/orders",
+      "status": 403,
+      "assertions": [
+        {
+          "name": "HTTP 403",
+          "passed": true
+        },
+        {
+          "name": "Business error",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "删除地址",
+      "method": "DELETE",
+      "path": "/api/addresses/1",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "下架商品",
+      "method": "DELETE",
+      "path": "/api/admin/products/21",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "被商品引用的分类不能删除",
+      "method": "DELETE",
+      "path": "/api/admin/categories/2",
+      "status": 409,
+      "assertions": [
+        {
+          "name": "HTTP 409",
+          "passed": true
+        },
+        {
+          "name": "Business error",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "创建可删除空分类",
+      "method": "POST",
+      "path": "/api/admin/categories",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "删除空分类",
+      "method": "DELETE",
+      "path": "/api/admin/categories/3",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "注销",
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 200,
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Business OK",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "collection",
+      "name": "已注销 token 失效",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 401,
+      "assertions": [
+        {
+          "name": "HTTP 401",
+          "passed": true
+        },
+        {
+          "name": "Business error",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/v3/api-docs",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/admin/products/21",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/admin/products/21/stock-logs?page=1&size=100",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/admin/orders/1",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/admin/orders/2",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/products/21",
+      "status": 404
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/cart",
+      "status": 401
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/actuator/health",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/swagger-ui/index.html",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/cart",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "GET",
+      "path": "/api/addresses",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 200
+    },
+    {
+      "phase": "postcheck",
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 200
+    }
+  ],
+  "checks": [
+    {
+      "name": "All live OpenAPI business operations exercised",
+      "passed": true
+    },
+    {
+      "name": "Final stock is 18 and test product is inactive",
+      "passed": true
+    },
+    {
+      "name": "Stock ledger balances and duplicate operations did not add entries",
+      "passed": true
+    },
+    {
+      "name": "Completed order and address snapshot remain correct after address deletion",
+      "passed": true
+    },
+    {
+      "name": "Second order remains cancelled",
+      "passed": true
+    },
+    {
+      "name": "Inactive product is unavailable publicly",
+      "passed": true
+    },
+    {
+      "name": "Unauthenticated cart access is denied",
+      "passed": true
+    },
+    {
+      "name": "Health is UP",
+      "passed": true
+    },
+    {
+      "name": "Swagger HTML is available",
+      "passed": true
+    },
+    {
+      "name": "Test user cart and address cleanup are complete",
+      "passed": true
+    },
+    {
+      "name": "Fresh user token revoked",
+      "passed": true
+    },
+    {
+      "name": "Test admin token revoked",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "collection": {
+    "requests": {
+      "total": 49,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 122,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "testData": {
+    "runId": "4ef2e645-587e-4a1c-a2fa-fdd5a42eb85a",
+    "username": "pm_4ef2e645587e4a1ca2fafdd5a42eb85a",
+    "categoryId": 2,
+    "productId": 21,
+    "orderId": 1,
+    "cancelOrderId": 2
+  },
+  "coverage": {
+    "total": 36,
+    "covered": 36,
+    "missing": []
+  },
+  "finishedAt": "2026-11-11T09:38:36.576Z",
+  "passed": true
+}

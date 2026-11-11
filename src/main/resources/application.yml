@@ -1,0 +1,33 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+spring:
+  application:
+    name: easymall
+  profiles:
+    default: mysql
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      connection-timeout: 10000
+  jackson:
+    time-zone: UTC
+  flyway:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+app:
+  admin-username: ${ADMIN_USERNAME:admin}
+  admin-password: ${ADMIN_PASSWORD:}
+  seed-data: ${SEED_DATA:false}
+  token-hours: 12
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

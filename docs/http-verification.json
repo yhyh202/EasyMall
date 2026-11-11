@@ -1,0 +1,34 @@
+{
+  "business_endpoints": 36,
+  "postman_requests": 49,
+  "uncovered_endpoints": [],
+  "jmeter_xml_parse": "PASS",
+  "http_runs": {
+    "demo": {
+      "requests": {
+        "total": 49,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 98,
+        "pending": 0,
+        "failed": 0
+      },
+      "failures": 0
+    },
+    "mysql": {
+      "requests": {
+        "total": 49,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 98,
+        "pending": 0,
+        "failed": 0
+      },
+      "failures": 0
+    }
+  }
+}

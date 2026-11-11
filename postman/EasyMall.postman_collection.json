@@ -1,0 +1,1605 @@
+{
+  "info": {
+    "name": "EasyMall Complete API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "按文件夹顺序执行；覆盖全部 36 个业务方法/路径及幂等和权限场景。每次创建独立测试数据，订单和商品历史保留。"
+  },
+  "item": [
+    {
+      "name": "01 注册与登录",
+      "item": [
+        {
+          "name": "注册新用户",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('runId', pm.variables.replaceIn('{{$guid}}'));",
+                  "pm.environment.set('username', 'pm_' + pm.environment.get('runId').replace(/-/g, ''));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "用户登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('userToken', result.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "当前用户",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "管理员登录",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"password\": \"{{adminPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('adminToken', result.data.token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 分类商品与库存",
+      "item": [
+        {
+          "name": "创建分类",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/categories",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman-{{runId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('categoryId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "修改分类",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/categories/{{categoryId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated-{{runId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "分类列表",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/categories"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "创建商品",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{categoryId}},\n  \"name\": \"Postman product\",\n  \"description\": \"API regression product\",\n  \"price\": 12.3,\n  \"active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('productId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "修改商品",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{categoryId}},\n  \"name\": \"Updated product\",\n  \"description\": \"API regression product\",\n  \"price\": 12.3,\n  \"active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "入库 20 件",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "stock-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}/stock",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delta\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "幂等入库重放",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "stock-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}/stock",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delta\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "商品搜索分页",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products?page=1&size=20&categoryId={{categoryId}}&keyword=Updated"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "商品详情",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products/{{productId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "管理商品分页",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products?page=1&size=20"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "管理商品详情",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "库存流水",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}/stock-logs?page=1&size=20"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 地址与购物车",
+      "item": [
+        {
+          "name": "创建地址",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/addresses",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient\": \"Postman buyer\",\n  \"phone\": \"13800138000\",\n  \"detail\": \"Test address 1\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('addressId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "修改地址",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/addresses/{{addressId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient\": \"Postman buyer\",\n  \"phone\": \"13800138000\",\n  \"detail\": \"Test address 2\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "地址列表",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/addresses"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "设置购物车",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": {{productId}},\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('cartItemId', result.data[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "修改行数量",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/items/{{cartItemId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "购物车列表",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "删除行",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/items/{{cartItemId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "再次加入购物车",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": {{productId}},\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "清空购物车",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "为购买加入购物车",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/cart/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": {{productId}},\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 下单支付发货收货",
+      "item": [
+        {
+          "name": "下单",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "order-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": {{addressId}},\n  \"items\": [\n    {\n      \"productId\": {{productId}},\n      \"quantity\": 2\n    }\n  ],\n  \"clearCart\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('orderId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "幂等下单重放",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "order-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": {{addressId}},\n  \"items\": [\n    {\n      \"productId\": {{productId}},\n      \"quantity\": 2\n    }\n  ],\n  \"clearCart\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "同键不同内容应拒绝",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "order-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": {{addressId}},\n  \"items\": [\n    {\n      \"productId\": {{productId}},\n      \"quantity\": 2\n    }\n  ],\n  \"clearCart\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', function() { pm.response.to.have.status(409); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business error', function() { pm.expect(result.code).not.to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "用户订单分页",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders?page=1&size=20"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "订单详情",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "模拟支付",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "payment-{{runId}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}/pay"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "幂等支付重放",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "payment-{{runId}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}/pay"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "支付记录",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}/payment"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "全站订单分页",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/orders?page=1&size=20"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "管理订单详情",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/orders/{{orderId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "管理员发货",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/orders/{{orderId}}/ship",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingNo\": \"POSTMAN-{{runId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "用户确认收货",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{orderId}}/receive"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 取消及权限与清理",
+      "item": [
+        {
+          "name": "创建待取消订单",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "cancel-order-{{runId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": {{addressId}},\n  \"items\": [\n    {\n      \"productId\": {{productId}},\n      \"quantity\": 2\n    }\n  ],\n  \"clearCart\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('cancelOrderId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "取消并回补库存",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{cancelOrderId}}/cancel"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "幂等取消重放",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{cancelOrderId}}/cancel"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "普通用户不能访问管理接口",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', function() { pm.response.to.have.status(403); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business error', function() { pm.expect(result.code).not.to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "删除地址",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/addresses/{{addressId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "下架商品",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/products/{{productId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "被商品引用的分类不能删除",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/categories/{{categoryId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', function() { pm.response.to.have.status(409); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business error', function() { pm.expect(result.code).not.to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "创建可删除空分类",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/categories",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Empty-{{runId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
+                  "if (result.code === 'OK') pm.environment.set('emptyCategoryId', result.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "删除空分类",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/admin/categories/{{emptyCategoryId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "注销",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/logout"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "已注销 token 失效",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', function() { pm.response.to.have.status(401); });",
+                  "const result = pm.response.json();",
+                  "pm.test('Business error', function() { pm.expect(result.code).not.to.eql('OK'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
