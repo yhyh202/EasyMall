@@ -7,12 +7,17 @@ import java.util.*;
 @Service
 public class CatalogService {
     private final Db db;
-    public CatalogService(Db db) { this.db=db; }
+    private final SearchCountCache counts;
+    public CatalogService(Db db,SearchCountCache counts) { this.db=db; this.counts=counts; }
     public Api.Page<Map<String,Object>> products(String keyword,Long categoryId,boolean admin,int page,int size) {
         String where=admin?" WHERE 1=1":" WHERE active=TRUE"; var args=new ArrayList<Object>();
-        if(keyword!=null && !keyword.isBlank()) { if(keyword.length()>100) throw new BusinessException(400,"VALIDATION_ERROR","keyword 过长"); where+=" AND name LIKE ?"; args.add("%"+keyword+"%"); }
+        boolean hasKeyword=keyword!=null && !keyword.isBlank();
+        if(hasKeyword) { if(keyword.length()>100) throw new BusinessException(400,"VALIDATION_ERROR","keyword 过长"); where+=" AND name LIKE ?"; args.add("%"+keyword+"%"); }
         if(categoryId!=null) { where+=" AND category_id=?"; args.add(categoryId); }
-        return db.page("product",where,args,page,size);
+        String countWhere=where;
+        // Admin listings stay exact; only the public listing tolerates a short-lived cached total.
+        if(admin) return db.page("product",where,args,page,size);
+        return db.page("product",where,args,page,size,()->counts.count(hasKeyword?keyword:null,categoryId,()->db.count("product",countWhere,args)));
     }
     public Map<String,Object> product(long id,boolean admin) { return db.one("SELECT * FROM product WHERE id=?"+(admin?"":" AND active=TRUE"),id); }
     public List<Map<String,Object>> categories() { return db.rows("SELECT * FROM category ORDER BY id"); }
@@ -26,9 +31,13 @@ public class CatalogService {
         db.one("SELECT id FROM category WHERE id=?",p.categoryId());
         if(id==null) id=db.insert("INSERT INTO product(category_id,name,description,price,active,stock) VALUES (?,?,?,?,?,0)",p.categoryId(),p.name(),p.description(),p.price(),p.active());
         else if(db.update("UPDATE product SET category_id=?,name=?,description=?,price=?,active=? WHERE id=?",p.categoryId(),p.name(),p.description(),p.price(),p.active(),id)==0) throw BusinessException.missing();
+        counts.invalidateAfterCommit();
         return product(id,true);
     }
-    public void deactivate(long id) { if(db.update("UPDATE product SET active=FALSE WHERE id=?",id)==0) throw BusinessException.missing(); }
+    public void deactivate(long id) {
+        if(db.update("UPDATE product SET active=FALSE WHERE id=?",id)==0) throw BusinessException.missing();
+        counts.invalidateAfterCommit();
+    }
     @Transactional public Map<String,Object> stock(long actor,long product,Requests.Stock s,String key) {
         OrderService.validateKey(key);
         db.one("SELECT id FROM mall_user WHERE id=? FOR UPDATE",actor);

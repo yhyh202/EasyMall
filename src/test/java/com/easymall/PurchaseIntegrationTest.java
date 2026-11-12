@@ -103,6 +103,36 @@ class PurchaseIntegrationTest {
         assertThat(db.rows("SELECT * FROM stock_log WHERE order_id=? AND reason='RELEASE'",id)).hasSize(1);
         assertThatThrownBy(()->orders.pay(b.id(),id,key())).isInstanceOf(BusinessException.class);
     }
+    @Test void independentBuyersAndProductsKeepSeparateOrdersAndStock() throws Exception {
+        var buyers=new ArrayList<Buyer>(); var products=new ArrayList<Long>();
+        for(int i=0;i<8;i++) { buyers.add(buyer()); products.add(product(5)); }
+        var results=concurrent(8,i->orders.create(buyers.get(i).id(),order(buyers.get(i),products.get(i),2),key()));
+        var ids=new HashSet<Long>();
+        for(int i=0;i<8;i++) {
+            var created=(Map<String,Object>)results.get(i);
+            ids.add(Db.number(created,"id"));
+            assertThat(Db.number(created,"user_id")).isEqualTo(buyers.get(i).id());
+            assertThat((BigDecimal)created.get("total_amount")).isEqualByComparingTo("24.60");
+            assertThat(stock(products.get(i))).isEqualTo(3);
+            assertThat(db.rows("SELECT * FROM stock_log WHERE product_id=? AND reason='RESERVE'",products.get(i))).hasSize(1);
+        }
+        assertThat(ids).hasSize(8);
+    }
+    @Test void overlappingMultiProductOrdersLockInConsistentOrder() throws Exception {
+        long first=product(8),second=product(8);
+        var buyers=new ArrayList<Buyer>(); for(int i=0;i<8;i++) buyers.add(buyer());
+        var results=concurrent(8,i->{
+            var b=buyers.get(i);
+            var lines=i%2==0?List.of(new Requests.Line(first,1),new Requests.Line(second,1)):
+                List.of(new Requests.Line(second,1),new Requests.Line(first,1));
+            return orders.create(b.id(),new Requests.Order(b.address(),lines,false),key());
+        });
+        assertThat(results.stream().map(o->Db.number((Map<String,Object>)o,"id")).distinct()).hasSize(8);
+        for(long product:List.of(first,second)) {
+            assertThat(stock(product)).isZero();
+            assertThat(db.rows("SELECT * FROM stock_log WHERE product_id=? AND reason='RESERVE'",product)).hasSize(8);
+        }
+    }
     @Test void paymentCancelRaceHasOneConsistentOutcome() throws Exception {
         var b=buyer(); long product=product(5); long id=Db.number(orders.create(b.id(),order(b,product,2),key()),"id");
         var results=concurrent(2,i->{ try { return i==0?orders.pay(b.id(),id,key()):orders.cancel(b.id(),id); } catch(BusinessException e) { return e.code; } });

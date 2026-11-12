@@ -15,7 +15,19 @@ spring:
     time-zone: UTC
   flyway:
     enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      # Keep these short: on a Redis failure the request falls back to MySQL after one timeout.
+      timeout: 200ms
+      connect-timeout: 200ms
 management:
+  health:
+    redis:
+      # Redis is an optional cache; its outage must not mark the application DOWN.
+      enabled: false
   endpoints:
     web:
       exposure:
@@ -28,6 +40,12 @@ app:
   admin-password: ${ADMIN_PASSWORD:}
   seed-data: ${SEED_DATA:false}
   token-hours: 12
+  search-cache:
+    # Caches the total of the public product search (GET /api/products) in Redis.
+    enabled: ${SEARCH_CACHE_ENABLED:false}
+    # Upper bound on how stale a total can be after a change that bypassed the application.
+    ttl: ${SEARCH_CACHE_TTL:60s}
+    failure-backoff: 5s
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

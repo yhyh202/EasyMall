@@ -1,0 +1,2660 @@
+{
+  "startedAt": "2026-11-12T03:01:42.579Z",
+  "model": "closed-loop, keep-alive HTTP/1.1, no retries",
+  "seconds": 30,
+  "warmSeconds": 5,
+  "levels": [
+    64
+  ],
+  "environment": {
+    "appHeapMb": 384,
+    "databasePort": 13327,
+    "connectionPool": 20,
+    "databaseName": "easymall_bench",
+    "databasePid": 56668,
+    "baseUrl": "http://127.0.0.1:18081",
+    "appPid": 55244,
+    "bufferPoolMb": 256,
+    "appPort": 18081,
+    "cpu": "Intel(R) Core(TM) i7-14650HX",
+    "logicalCpus": 24,
+    "totalMemoryBytes": 16873545728,
+    "freeMemoryBytes": 2099654656,
+    "node": "v24.15.0",
+    "java": "java version \"21.0.7\" 2025-04-15 LTS\r\nJava(TM) SE Runtime Environment (build 21.0.7+8-LTS-245)\r\nJava HotSpot(TM) 64-Bit Server VM (build 21.0.7+8-LTS-245, mixed mode, sharing)\r\n",
+    "mysql": "8.0.34",
+    "sameHost": true
+  },
+  "results": [
+    {
+      "name": "order_hotspot",
+      "concurrency": 64,
+      "ok": 5644,
+      "fail": 0,
+      "statuses": {
+        "200": 5644
+      },
+      "failureExamples": [],
+      "requests": 5644,
+      "elapsedSeconds": 30.464598400000003,
+      "throughput": 185.2642180242888,
+      "latencyMs": {
+        "mean": 342.8958096917079,
+        "p50": 338.5656999999992,
+        "p95": 427.04239999999845,
+        "p99": 457.35719999999856,
+        "max": 568.6171000000031
+      },
+      "warmupRequests": 879,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 5643,
+          "Innodb_row_lock_time": 554420,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 452146,
+          "Threads_running": 0,
+          "Questions": 79144
+        },
+        "topSql": [
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 5644,
+            "totalMs": 555493.2625,
+            "rowsExamined": 5644
+          },
+          {
+            "sql": "COMMIT",
+            "count": 5644,
+            "totalMs": 3466.3446,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 5644,
+            "totalMs": 1202.1854,
+            "rowsExamined": 5644
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 5644,
+            "totalMs": 1149.8075,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 5715,
+            "totalMs": 1038.8221,
+            "rowsExamined": 5715
+          },
+          {
+            "sql": "INSERT INTO `order_item` ( `order_id` , `product_id` , `product_name` , `unit_price` , `quantity` ) VALUES (...)",
+            "count": 5644,
+            "totalMs": 1008.023,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 5644,
+            "totalMs": 1005.7885,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `order_item` WHERE `order_id` = ? ORDER BY `product_id`",
+            "count": 5644,
+            "totalMs": 993.8996,
+            "rowsExamined": 11288
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `user_id` = ? AND `request_key` = ?",
+            "count": 5644,
+            "totalMs": 877.1028,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 5644,
+            "totalMs": 859.5642,
+            "rowsExamined": 5644
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 11288,
+            "totalMs": 828.4508,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 5644,
+            "totalMs": 816.1664,
+            "rowsExamined": 5644
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 261793,
+          "TOTAL_TIME": 3786.2191125,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 261793,
+          "TOTAL_TIME": 3545.398,
+          "MAX": 0.252
+        },
+        "jvm.gc.pause": {
+          "COUNT": 401,
+          "TOTAL_TIME": 0.504,
+          "MAX": 0.003
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 273152,
+          "TOTAL_TIME": 5090.4464813,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 273152,
+          "TOTAL_TIME": 4148.27,
+          "MAX": 0.252
+        },
+        "jvm.gc.pause": {
+          "COUNT": 427,
+          "TOTAL_TIME": 0.538,
+          "MAX": 0.003
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:01:50.768Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.004101270363656682
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15779283640655972
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:01:52.651Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 41
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04245638861796145
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12013394539304854
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:01:54.476Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 40
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.039642791177252626
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.20776553261150998
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:01:56.312Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04179606557096399
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.14210339357298574
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:01:58.116Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 41
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03861524951870992
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.14801364277039541
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:00.003Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04219982002299762
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1987595493739921
+            }
+          },
+          "lockWaitEdges": {
+            "product": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:01.854Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.039411261513493334
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16793767378242064
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:03.666Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04133993407433472
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15415695200325907
+            }
+          },
+          "lockWaitEdges": {
+            "product": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:05.514Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.045695617484221046
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.18401531009988636
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:07.482Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04093380620369373
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.14262906775539175
+            }
+          },
+          "lockWaitEdges": {
+            "product": 175
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:09.335Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 44
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04901244804625282
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.20570906921773557
+            }
+          },
+          "lockWaitEdges": {
+            "product": 182
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:11.209Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.0386849350340675
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15491383253170732
+            }
+          },
+          "lockWaitEdges": {
+            "product": 181
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:12.920Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 41
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04311623592046677
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15919240206147744
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:14.685Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 47
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.037833472243490096
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19645284644062008
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:16.530Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.034948368672293624
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15049233662955996
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:18.389Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04032188862428231
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15156545217444484
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:02:20.256Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03484827865419607
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16742201540003543
+            }
+          },
+          "lockWaitEdges": {
+            "product": 171
+          }
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 10.155543539001187,
+        "eventLoopP99Ms": 38.797311,
+        "eventLoopMaxMs": 52.461567
+      },
+      "consistency": {
+        "orders": 6523,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_distributed",
+      "concurrency": 64,
+      "ok": 4956,
+      "fail": 0,
+      "statuses": {
+        "200": 4956
+      },
+      "failureExamples": [],
+      "requests": 4956,
+      "elapsedSeconds": 30.3157005,
+      "throughput": 163.4796464623999,
+      "latencyMs": {
+        "mean": 389.7307268361588,
+        "p50": 378.7011999999959,
+        "p95": 530.3755000000019,
+        "p99": 738.1971999999951,
+        "max": 978.3133999999991
+      },
+      "warmupRequests": 1043,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 0,
+          "Innodb_row_lock_time": 0,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 396243,
+          "Threads_running": 0,
+          "Questions": 69505
+        },
+        "topSql": [
+          {
+            "sql": "COMMIT",
+            "count": 4956,
+            "totalMs": 7168.6861,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4956,
+            "totalMs": 1121.1513,
+            "rowsExamined": 4956
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4956,
+            "totalMs": 1072.5552,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4956,
+            "totalMs": 1035.1277,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `order_item` WHERE `order_id` = ? ORDER BY `product_id`",
+            "count": 4956,
+            "totalMs": 1030.4817,
+            "rowsExamined": 9912
+          },
+          {
+            "sql": "INSERT INTO `order_item` ( `order_id` , `product_id` , `product_name` , `unit_price` , `quantity` ) VALUES (...)",
+            "count": 4956,
+            "totalMs": 991.0252,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 5023,
+            "totalMs": 963.9389,
+            "rowsExamined": 5023
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `user_id` = ? AND `request_key` = ?",
+            "count": 4956,
+            "totalMs": 850.8861,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4956,
+            "totalMs": 846.504,
+            "rowsExamined": 4956
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4956,
+            "totalMs": 827.4735,
+            "rowsExamined": 4956
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4956,
+            "totalMs": 821.0399,
+            "rowsExamined": 4956
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 9912,
+            "totalMs": 784.512,
+            "rowsExamined": 0
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 275241,
+          "TOTAL_TIME": 5259.3477928,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 275241,
+          "TOTAL_TIME": 4250.286,
+          "MAX": 0.252
+        },
+        "jvm.gc.pause": {
+          "COUNT": 432,
+          "TOTAL_TIME": 0.545,
+          "MAX": 0.003
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 285220,
+          "TOTAL_TIME": 6286.8920872,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 285220,
+          "TOTAL_TIME": 4850.809,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 455,
+          "TOTAL_TIME": 0.579,
+          "MAX": 0.003
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:02:31.882Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.024677726693244324
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2149422611655687
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:33.759Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 28
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.048498282121009754
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.25265746746640405
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:35.615Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 34
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05504031204619859
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.24412565659837038
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:37.506Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 30
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04890737388869662
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.18291807070679877
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:39.418Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 33
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.037131019954239286
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.21022918290489467
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:41.382Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 19
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03689558254973764
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1718170755466901
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:43.601Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 33
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03092538696188491
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19830913487900437
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:45.592Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 26
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.045723817500369045
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2638252905093291
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:47.423Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 31
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03691363695959313
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1594332881561381
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:49.305Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 38
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04300527868371395
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16972288303380745
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:51.126Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 31
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04572311015578445
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19936005279987978
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:53.048Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 29
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03502703038791609
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.13769148717034774
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:54.944Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 37
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04097197529778443
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.23616845925499408
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:56.840Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 36
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.041766308174558876
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16400070536842137
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:02:58.722Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 34
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.038407994944763726
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16175110066734888
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:00.612Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 23
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03944587826393115
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.22096751675585813
+            }
+          },
+          "lockWaitEdges": {}
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 8.711252145949846,
+        "eventLoopP99Ms": 35.749887,
+        "eventLoopMaxMs": 56.524799
+      },
+      "consistency": {
+        "orders": 5999,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "catalog_search",
+      "concurrency": 64,
+      "ok": 7926,
+      "fail": 0,
+      "statuses": {
+        "200": 7926
+      },
+      "failureExamples": [],
+      "requests": 7926,
+      "elapsedSeconds": 30.143641699999993,
+      "throughput": 262.94102347958847,
+      "latencyMs": {
+        "mean": 242.96230548826733,
+        "p50": 240.2054999999964,
+        "p95": 291.1160999999993,
+        "p99": 328.8776999999973,
+        "max": 399.45040000000154
+      },
+      "warmupRequests": 1179,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 0,
+          "Innodb_row_lock_time": 0,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 267659978,
+          "Threads_running": 0,
+          "Questions": 15966
+        },
+        "topSql": [
+          {
+            "sql": "SELECT COUNT ( * ) FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ?",
+            "count": 7923,
+            "totalMs": 593522.1425,
+            "rowsExamined": 79744995
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ? ORDER BY `id` DESC LIMIT ? OFFSET ?",
+            "count": 7926,
+            "totalMs": 3674.8875,
+            "rowsExamined": 158500
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 63,
+            "totalMs": 14.4697,
+            "rowsExamined": 63
+          },
+          {
+            "sql": "SELECT `l` . `OBJECT_NAME` , COUNT ( * ) FROM `performance_schema` . `data_lock_waits` `w` JOIN `performance_schema` . `data_locks` `l` ON `l` . `ENGINE_LOCK_ID` = `w` . `REQUESTING_ENGINE_LOCK_ID` AND `l` . `ENGINE` = `w` . `ENGINE` WHERE `l` . `OBJECT_SCHEMA` = ? GROUP BY `l` . `OBJECT_NAME`",
+            "count": 15,
+            "totalMs": 4.6571,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 17,
+            "totalMs": 2.0253,
+            "rowsExamined": 17
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9465,
+            "rowsExamined": 91
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.369,
+            "rowsExamined": 6
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 287581,
+          "TOTAL_TIME": 6434.9092018,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 287581,
+          "TOTAL_TIME": 4936.255,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 458,
+          "TOTAL_TIME": 0.585,
+          "MAX": 0.003
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 303496,
+          "TOTAL_TIME": 7677.4112424,
+          "MAX": 0.3702252
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 303496,
+          "TOTAL_TIME": 5527.153,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 480,
+          "TOTAL_TIME": 0.616,
+          "MAX": 0.003
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:03:12.361Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 12
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.01559049197154225
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.4634145329933155
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:14.467Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 40
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.026579101481736544
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9143462237094827
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:16.399Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.025700096896920512
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9491082184153847
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:18.472Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 29
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.026833082274592024
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.8883801146201238
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:20.469Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 35
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02609230585940228
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9375812860980133
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:22.439Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 37
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.023681776371182326
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9169561643424958
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:24.518Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 40
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.026119136024114187
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9171990518167238
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:26.465Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 47
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.023912100319361754
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9296701927788582
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:28.533Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 38
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.028455828344133446
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9046563538203303
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:30.575Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.030118602761608985
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9453224276779584
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:32.547Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 40
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02517337892864612
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.950337671378604
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:34.650Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 40
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.030556459062955864
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9238231455094741
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:36.504Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 36
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.029049175584706766
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9420779797239373
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:38.576Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 47
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02712479499296943
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.8926534100723202
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:40.557Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 35
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.0335883061203514
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.9548338359690429
+            }
+          },
+          "lockWaitEdges": {}
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 11.769129159574877,
+        "eventLoopP99Ms": 45.318143,
+        "eventLoopMaxMs": 61.734911
+      },
+      "consistency": null
+    },
+    {
+      "name": "product_authenticated",
+      "concurrency": 64,
+      "ok": 21779,
+      "fail": 0,
+      "statuses": {
+        "200": 21779
+      },
+      "failureExamples": [],
+      "requests": 21779,
+      "elapsedSeconds": 30.040521799999986,
+      "throughput": 724.9874068432463,
+      "latencyMs": {
+        "mean": 88.23437730841636,
+        "p50": 84.6583999999857,
+        "p95": 127.86500000001979,
+        "p99": 162.78199999999197,
+        "max": 243.55509999999776
+      },
+      "warmupRequests": 4068,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 0,
+          "Innodb_row_lock_time": 0,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 109108,
+          "Threads_running": 0,
+          "Questions": 43686
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 21850,
+            "totalMs": 4100.6732,
+            "rowsExamined": 21850
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? AND ACTIVE = TRUE",
+            "count": 21779,
+            "totalMs": 3438.3851,
+            "rowsExamined": 21779
+          },
+          {
+            "sql": "SELECT `l` . `OBJECT_NAME` , COUNT ( * ) FROM `performance_schema` . `data_lock_waits` `w` JOIN `performance_schema` . `data_locks` `l` ON `l` . `ENGINE_LOCK_ID` = `w` . `REQUESTING_ENGINE_LOCK_ID` AND `l` . `ENGINE` = `w` . `ENGINE` WHERE `l` . `OBJECT_SCHEMA` = ? GROUP BY `l` . `OBJECT_NAME`",
+            "count": 17,
+            "totalMs": 4.594,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 19,
+            "totalMs": 2.2993,
+            "rowsExamined": 19
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9672,
+            "rowsExamined": 91
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3433,
+            "rowsExamined": 6
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 311635,
+          "TOTAL_TIME": 7677.4185396,
+          "MAX": 0.3380828
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 311635,
+          "TOTAL_TIME": 5527.154,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 488,
+          "TOTAL_TIME": 0.627,
+          "MAX": 0.003
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 355264,
+          "TOTAL_TIME": 7677.4446588,
+          "MAX": 0.3380828
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 355264,
+          "TOTAL_TIME": 5527.18,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 528,
+          "TOTAL_TIME": 0.678,
+          "MAX": 0.003
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:03:49.898Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03276342913292172
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2723753251662254
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:51.862Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05028391356640383
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.20249391027780017
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:53.728Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04725928256628322
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2804836068435329
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:55.511Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05741434878050918
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2772086040426065
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:57.304Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04742717476257853
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19684135810700398
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:03:59.136Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05651214096511179
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16985508228088164
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:00.928Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05192860033135967
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.24120453389350793
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:02.692Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.051853914089318554
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12744388453663014
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:04.458Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05494550090604359
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.16798802326589057
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:06.228Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.051972077950466634
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.18062484310902815
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:07.987Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.053321795039799544
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.11926859588875593
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:09.779Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.0522707471934651
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.18000763351996915
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:11.573Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05085207953692048
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15872457893434944
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:13.344Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05266282629676522
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12438552417164583
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:15.124Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04778802506741117
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.18952467340132942
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:16.932Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.054706001352282506
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1659910837753259
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:18.726Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05350834458281278
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.25554994838151823
+            }
+          },
+          "lockWaitEdges": {}
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 19.96910366967492,
+        "eventLoopP99Ms": 36.044799,
+        "eventLoopMaxMs": 52.330495
+      },
+      "consistency": null
+    },
+    {
+      "name": "product_public",
+      "concurrency": 64,
+      "ok": 27287,
+      "fail": 0,
+      "statuses": {
+        "200": 27287
+      },
+      "failureExamples": [],
+      "requests": 27287,
+      "elapsedSeconds": 30.04347999999998,
+      "throughput": 908.2503092185066,
+      "latencyMs": {
+        "mean": 70.42201448308727,
+        "p50": 67.0448000000033,
+        "p95": 105.05920000001788,
+        "p99": 139.38389999998617,
+        "max": 243.25179999999818
+      },
+      "warmupRequests": 4940,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 0,
+          "Innodb_row_lock_time": 0,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 54787,
+          "Threads_running": 0,
+          "Questions": 27415
+        },
+        "topSql": [
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? AND ACTIVE = TRUE",
+            "count": 27287,
+            "totalMs": 4494.1806,
+            "rowsExamined": 27287
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 71,
+            "totalMs": 14.2462,
+            "rowsExamined": 71
+          },
+          {
+            "sql": "SELECT `l` . `OBJECT_NAME` , COUNT ( * ) FROM `performance_schema` . `data_lock_waits` `w` JOIN `performance_schema` . `data_locks` `l` ON `l` . `ENGINE_LOCK_ID` = `w` . `REQUESTING_ENGINE_LOCK_ID` AND `l` . `ENGINE` = `w` . `ENGINE` WHERE `l` . `OBJECT_SCHEMA` = ? GROUP BY `l` . `OBJECT_NAME`",
+            "count": 17,
+            "totalMs": 4.8979,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 19,
+            "totalMs": 2.0727,
+            "rowsExamined": 19
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9804,
+            "rowsExamined": 91
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3838,
+            "rowsExamined": 6
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 360207,
+          "TOTAL_TIME": 7677.4518375,
+          "MAX": 0.3380828
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 360207,
+          "TOTAL_TIME": 5527.182,
+          "MAX": 0.366
+        },
+        "jvm.gc.pause": {
+          "COUNT": 536,
+          "TOTAL_TIME": 0.6880000000000001,
+          "MAX": 0.003
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 387565,
+          "TOTAL_TIME": 7677.4704088,
+          "MAX": 0.2815908
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 387565,
+          "TOTAL_TIME": 5527.2,
+          "MAX": 0.247
+        },
+        "jvm.gc.pause": {
+          "COUNT": 580,
+          "TOTAL_TIME": 0.746,
+          "MAX": 0.002
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:04:28.031Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.03690068130275086
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15127008245032725
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:29.850Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05831037750109999
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1969761470993493
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:31.770Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.055624120508261765
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.26052862194270987
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:33.608Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.047708340247585544
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.223131888822083
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:35.398Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.0565296607546869
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.21561777209271626
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:37.174Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05355109354644506
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1775589353049598
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:38.951Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.050134236043584135
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1517612197971001
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:40.767Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05254856812206333
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19802747433909695
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:42.547Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.0529481838562021
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.25846271060887716
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:44.316Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.054135561654516544
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.15443824653942573
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:46.105Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 1
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.04941356039234166
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.22203634708468278
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:47.905Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05282958523839423
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12651669046283587
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:49.712Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05469473300308365
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.21500180807761324
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:51.482Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.049128609692186916
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.17762411051367308
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:53.278Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05566786658003565
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12699851222737213
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:55.056Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.05664958202988128
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.20561320911018055
+            }
+          },
+          "lockWaitEdges": {}
+        },
+        {
+          "at": "2026-11-12T03:04:56.856Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 0
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.052271499114255965
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.22014750212473044
+            }
+          },
+          "lockWaitEdges": {}
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 23.709925247247856,
+        "eventLoopP99Ms": 33.292287,
+        "eventLoopMaxMs": 51.314687
+      },
+      "consistency": null
+    },
+    {
+      "name": "order_same_user",
+      "concurrency": 64,
+      "ok": 3134,
+      "fail": 0,
+      "statuses": {
+        "200": 3134
+      },
+      "failureExamples": [],
+      "requests": 3134,
+      "elapsedSeconds": 30.642355900000023,
+      "throughput": 102.27673127443826,
+      "latencyMs": {
+        "mean": 618.785516113592,
+        "p50": 602.8380000000179,
+        "p95": 805.8312000000151,
+        "p99": 907.6042000000016,
+        "max": 997.1689999999944
+      },
+      "warmupRequests": 550,
+      "db": {
+        "status": {
+          "Innodb_row_lock_waits": 3133,
+          "Innodb_row_lock_time": 570134,
+          "Innodb_buffer_pool_reads": 0,
+          "Innodb_buffer_pool_read_requests": 256578,
+          "Threads_running": 0,
+          "Questions": 43997
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 3134,
+            "totalMs": 570822.2406,
+            "rowsExamined": 3134
+          },
+          {
+            "sql": "COMMIT",
+            "count": 3134,
+            "totalMs": 4875.545,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 3134,
+            "totalMs": 721.9761,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 3134,
+            "totalMs": 706.5785,
+            "rowsExamined": 3134
+          },
+          {
+            "sql": "SELECT * FROM `order_item` WHERE `order_id` = ? ORDER BY `product_id`",
+            "count": 3134,
+            "totalMs": 624.3291,
+            "rowsExamined": 6268
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 3201,
+            "totalMs": 618.4025,
+            "rowsExamined": 3201
+          },
+          {
+            "sql": "INSERT INTO `order_item` ( `order_id` , `product_id` , `product_name` , `unit_price` , `quantity` ) VALUES (...)",
+            "count": 3134,
+            "totalMs": 574.6056,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 3134,
+            "totalMs": 567.2061,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `user_id` = ? AND `request_key` = ?",
+            "count": 3134,
+            "totalMs": 566.3146,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 3134,
+            "totalMs": 555.0891,
+            "rowsExamined": 3134
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 3134,
+            "totalMs": 523.1154,
+            "rowsExamined": 3134
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 6268,
+            "totalMs": 513.5239,
+            "rowsExamined": 0
+          }
+        ]
+      },
+      "metricsBefore": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 388668,
+          "TOTAL_TIME": 7902.4476665,
+          "MAX": 0.5036132
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 388668,
+          "TOTAL_TIME": 5637.017,
+          "MAX": 0.341
+        },
+        "jvm.gc.pause": {
+          "COUNT": 582,
+          "TOTAL_TIME": 0.748,
+          "MAX": 0.002
+        }
+      },
+      "metricsAfter": {
+        "hikaricp.connections.acquire": {
+          "COUNT": 395003,
+          "TOTAL_TIME": 9215.8439338,
+          "MAX": 0.5151157
+        },
+        "hikaricp.connections.usage": {
+          "COUNT": 395003,
+          "TOTAL_TIME": 6243.606,
+          "MAX": 0.401
+        },
+        "jvm.gc.pause": {
+          "COUNT": 597,
+          "TOTAL_TIME": 0.777,
+          "MAX": 0.003
+        }
+      },
+      "samples": [
+        {
+          "at": "2026-11-12T03:05:06.846Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 11
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 0
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.01977646904350081
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.183200570027914
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:08.747Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 38
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02701391596754707
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.20240129192069445
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:10.760Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 37
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02533612067040778
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.23667795500887798
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:12.629Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.025297463086751383
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.17656522256197127
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:14.553Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 36
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02459704121919942
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.17165014743378848
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 183
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:16.549Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.01858745346296451
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.19496446464106357
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:18.535Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.029309322899958374
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.163900763090859
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:20.398Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02799668949225562
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.21875146979581672
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:22.352Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.024571551418491506
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1417555721114725
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:24.346Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.022949529772694165
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.22281646411877598
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:26.306Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 44
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.029134371359972207
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1927540998171301
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 188
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:28.168Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.025378320676516485
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.2334250768039734
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:30.115Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 41
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.030327352100166495
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1953317639799964
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 171
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:32.011Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 41
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02570347068083649
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.12901471590489455
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:33.985Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 43
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.029016949967484974
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1474636172635756
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        },
+        {
+          "at": "2026-11-12T03:05:35.910Z",
+          "metrics": {
+            "hikaricp.connections.active": {
+              "VALUE": 20
+            },
+            "hikaricp.connections.pending": {
+              "VALUE": 42
+            },
+            "process.cpu.usage": {
+              "VALUE": 0.02388806981111112
+            },
+            "system.cpu.usage": {
+              "VALUE": 0.1736340966271395
+            }
+          },
+          "lockWaitEdges": {
+            "mall_user": 190
+          }
+        }
+      ],
+      "monitorErrors": [],
+      "driver": {
+        "cpuPercentOfOneCore": 6.529949687667711,
+        "eventLoopP99Ms": 35.323903,
+        "eventLoopMaxMs": 71.958527
+      },
+      "consistency": {
+        "orders": 3684,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    }
+  ],
+  "updatedAt": "2026-11-12T03:05:40.414Z",
+  "finishedAt": "2026-11-12T03:05:40.416Z"
+}

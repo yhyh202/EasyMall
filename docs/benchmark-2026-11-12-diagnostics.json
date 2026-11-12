@@ -1,0 +1,1144 @@
+{
+  "database": {
+    "logBin": 1,
+    "version": "8.0.34",
+    "isolation": "REPEATABLE-READ",
+    "syncBinlog": 1,
+    "maxConnections": 120,
+    "bufferPoolBytes": 268435456,
+    "flushLogAtCommit": 1
+  },
+  "countPlan": {
+    "query_block": {
+      "select_id": 1,
+      "cost_info": {
+        "query_cost": "566.95"
+      },
+      "table": {
+        "table_name": "product",
+        "access_type": "ref",
+        "possible_keys": [
+          "idx_product_category"
+        ],
+        "key": "idx_product_category",
+        "used_key_parts": [
+          "category_id",
+          "active"
+        ],
+        "key_length": "9",
+        "ref": [
+          "const",
+          "const"
+        ],
+        "rows_examined_per_scan": 4942,
+        "rows_produced_per_join": 549,
+        "filtered": "11.11",
+        "cost_info": {
+          "read_cost": "72.75",
+          "eval_cost": "54.91",
+          "prefix_cost": "566.95",
+          "data_read_per_join": "4M"
+        },
+        "used_columns": [
+          "category_id",
+          "name",
+          "active"
+        ],
+        "attached_condition": "(`easymall_bench`.`product`.`name` like '%catalog%')"
+      }
+    }
+  },
+  "pagePlan": {
+    "query_block": {
+      "select_id": 1,
+      "cost_info": {
+        "query_cost": "566.95"
+      },
+      "ordering_operation": {
+        "using_filesort": false,
+        "table": {
+          "table_name": "product",
+          "access_type": "ref",
+          "possible_keys": [
+            "idx_product_category"
+          ],
+          "key": "idx_product_category",
+          "used_key_parts": [
+            "category_id",
+            "active"
+          ],
+          "key_length": "9",
+          "ref": [
+            "const",
+            "const"
+          ],
+          "rows_examined_per_scan": 4942,
+          "rows_produced_per_join": 549,
+          "filtered": "11.11",
+          "backward_index_scan": true,
+          "cost_info": {
+            "read_cost": "72.75",
+            "eval_cost": "54.91",
+            "prefix_cost": "566.95",
+            "data_read_per_join": "4M"
+          },
+          "used_columns": [
+            "id",
+            "category_id",
+            "name",
+            "description",
+            "price",
+            "stock",
+            "active"
+          ],
+          "attached_condition": "(`easymall_bench`.`product`.`name` like '%catalog%')"
+        }
+      }
+    }
+  },
+  "invariants": {
+    "orders": 53723,
+    "products": 10085,
+    "negativeStock": 0,
+    "amountMismatch": 0,
+    "ledgerMismatch": 0
+  },
+  "osSampling": {
+    "samples": 18,
+    "windowStart": "2026-11-12T03:06:39.469Z",
+    "windowEnd": "2026-11-12T03:06:59.113Z",
+    "mysqlCpuPercentOfOneCoreMean": 1885.8666666666666,
+    "mysqlCpuPercentOfMachineMean": 78.57777777777777,
+    "appCpuPercentOfOneCoreMean": 73.00000000000001,
+    "systemCpuPercentMean": 95.62777777777777,
+    "minAvailableMemoryMb": 1656.90625,
+    "rawSamples": [
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:39.678705+00:00",
+        "systemCpuPercent": 98.3,
+        "availableMemoryMb": 2165.52734375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 76.9,
+                "rssMb": 397.62109375,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 76.9,
+            "rssMb": 418.71484375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1827.9,
+                "rssMb": 309.140625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1827.9,
+            "rssMb": 333.6875
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:40.769784+00:00",
+        "systemCpuPercent": 98.5,
+        "availableMemoryMb": 1986.37109375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 90.8,
+                "rssMb": 397.62109375,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 90.8,
+            "rssMb": 418.71484375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1823.3,
+                "rssMb": 309.140625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1823.3,
+            "rssMb": 333.6875
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:41.878769+00:00",
+        "systemCpuPercent": 98.2,
+        "availableMemoryMb": 2138.265625,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 58.3,
+                "rssMb": 397.62109375,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 58.3,
+            "rssMb": 418.71484375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1922.5,
+                "rssMb": 309.14453125,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1922.5,
+            "rssMb": 333.69140625
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:42.958311+00:00",
+        "systemCpuPercent": 83.1,
+        "availableMemoryMb": 2138.5390625,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 60.5,
+                "rssMb": 397.74609375,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 60.5,
+            "rssMb": 418.83984375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1553.6,
+                "rssMb": 309.14453125,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1553.6,
+            "rssMb": 333.69140625
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:44.032412+00:00",
+        "systemCpuPercent": 98.6,
+        "availableMemoryMb": 1910.03125,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 80.2,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 80.2,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1864.3,
+                "rssMb": 309.14453125,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1864.3,
+            "rssMb": 333.69140625
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:45.096192+00:00",
+        "systemCpuPercent": 94.8,
+        "availableMemoryMb": 1982.33984375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 70.9,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 70.9,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1970.6,
+                "rssMb": 309.1484375,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1970.6,
+            "rssMb": 333.6953125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:46.156902+00:00",
+        "systemCpuPercent": 96.5,
+        "availableMemoryMb": 2256.2421875,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 74.9,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 74.9,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1930.1,
+                "rssMb": 309.1484375,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1930.1,
+            "rssMb": 333.6953125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:47.236132+00:00",
+        "systemCpuPercent": 92.8,
+        "availableMemoryMb": 2239.1875,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 97.7,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 97.7,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1954.5,
+                "rssMb": 309.1484375,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1954.5,
+            "rssMb": 333.6953125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:48.294277+00:00",
+        "systemCpuPercent": 96.1,
+        "availableMemoryMb": 1734.92578125,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 70.7,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 70.7,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1881.2,
+                "rssMb": 309.1484375,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1881.2,
+            "rssMb": 333.6953125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:49.388285+00:00",
+        "systemCpuPercent": 95,
+        "availableMemoryMb": 1807.96875,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 77.1,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 77.1,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1960.6,
+                "rssMb": 309.15234375,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1960.6,
+            "rssMb": 333.69921875
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:50.444382+00:00",
+        "systemCpuPercent": 97.6,
+        "availableMemoryMb": 1801.765625,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 87.6,
+                "rssMb": 397.63671875,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 87.6,
+            "rssMb": 418.73046875
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1929.7,
+                "rssMb": 309.15625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1929.7,
+            "rssMb": 333.703125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:51.515085+00:00",
+        "systemCpuPercent": 93,
+        "availableMemoryMb": 2083.109375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 67.1,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 67.1,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1976.2,
+                "rssMb": 309.15625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1976.2,
+            "rssMb": 333.703125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:52.570985+00:00",
+        "systemCpuPercent": 94.3,
+        "availableMemoryMb": 2087.734375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 69.6,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 69.6,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1950.8,
+                "rssMb": 309.15625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1950.8,
+            "rssMb": 333.703125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:53.638009+00:00",
+        "systemCpuPercent": 93.6,
+        "availableMemoryMb": 1822.36328125,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 64.3,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 64.3,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1970.8,
+                "rssMb": 309.15625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1970.8,
+            "rssMb": 333.703125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:54.701017+00:00",
+        "systemCpuPercent": 98.9,
+        "availableMemoryMb": 1656.90625,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 75.7,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 75.7,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1797.2,
+                "rssMb": 309.16015625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1797.2,
+            "rssMb": 333.70703125
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:55.785949+00:00",
+        "systemCpuPercent": 98.8,
+        "availableMemoryMb": 1782.27734375,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 50.4,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 50.4,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1830.1,
+                "rssMb": 309.1640625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1830.1,
+            "rssMb": 333.7109375
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:56.991208+00:00",
+        "systemCpuPercent": 97.6,
+        "availableMemoryMb": 2057.66796875,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 65.6,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 65.6,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1888.6,
+                "rssMb": 309.1640625,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1888.6,
+            "rssMb": 333.7109375
+          }
+        }
+      },
+      {
+        "schemaVersion": 2,
+        "at": "2026-11-12T03:06:58.059542+00:00",
+        "systemCpuPercent": 95.6,
+        "availableMemoryMb": 2064.2578125,
+        "logicalCpus": 24,
+        "processes": {
+          "app": {
+            "members": [
+              {
+                "pid": 55244,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 9.8125,
+                "threads": 1
+              },
+              {
+                "pid": 42956,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.28125,
+                "threads": 3
+              },
+              {
+                "pid": 45316,
+                "cpuPercentOfOneCore": 75.7,
+                "rssMb": 397.640625,
+                "threads": 117
+              }
+            ],
+            "cpuPercentOfOneCore": 75.7,
+            "rssMb": 418.734375
+          },
+          "mysql": {
+            "members": [
+              {
+                "pid": 56668,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 13.25,
+                "threads": 1
+              },
+              {
+                "pid": 42428,
+                "cpuPercentOfOneCore": 0,
+                "rssMb": 11.296875,
+                "threads": 3
+              },
+              {
+                "pid": 50960,
+                "cpuPercentOfOneCore": 1913.6,
+                "rssMb": 309.16796875,
+                "threads": 64
+              }
+            ],
+            "cpuPercentOfOneCore": 1913.6,
+            "rssMb": 333.71484375
+          }
+        }
+      }
+    ]
+  }
+}

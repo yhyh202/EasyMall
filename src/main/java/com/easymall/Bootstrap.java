@@ -12,8 +12,9 @@ public class Bootstrap implements CommandLineRunner {
     private final PasswordEncoder passwords;
     private final String username,password;
     private final boolean seed;
-    public Bootstrap(Db db,PasswordEncoder passwords,@Value("${app.admin-username}") String username,@Value("${app.admin-password}") String password,@Value("${app.seed-data}") boolean seed) {
-        this.db=db; this.passwords=passwords; this.username=username; this.password=password; this.seed=seed;
+    private final SearchCountCache counts;
+    public Bootstrap(Db db,PasswordEncoder passwords,SearchCountCache counts,@Value("${app.admin-username}") String username,@Value("${app.admin-password}") String password,@Value("${app.seed-data}") boolean seed) {
+        this.db=db; this.passwords=passwords; this.counts=counts; this.username=username; this.password=password; this.seed=seed;
     }
     @Override @Transactional public void run(String... args) {
         if(!password.isBlank() && db.rows("SELECT id FROM mall_user WHERE username=?",username.toLowerCase(java.util.Locale.ROOT)).isEmpty()) {
@@ -27,6 +28,8 @@ public class Bootstrap implements CommandLineRunner {
                 long product=db.insert("INSERT INTO product(category_id,name,description,price,stock,active) VALUES (?,?,?,?,10000,TRUE)",category,"演示商品 "+i,"本地开发与压测样例",new java.math.BigDecimal("19.90").add(java.math.BigDecimal.valueOf(i)));
                 db.update("INSERT INTO stock_log(product_id,actor_id,delta,reason) VALUES (?,?,10000,'SEED')",product,actor);
             }
+            // Redis may outlive a recreated database; drop totals cached against the old data.
+            counts.invalidateAfterCommit();
         }
     }
 }
