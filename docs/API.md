@@ -4,7 +4,7 @@
 
 根地址 `http://localhost:8080`。请求 JSON 为 camelCase；来自数据库的响应字段为 snake_case。所有 ID 为正整数；时间以 ISO 8601 输出。业务金额使用 DECIMAL，JSON 为数字；支付金额只从订单读取。
 
-公开：注册、登录、商品 GET、分类 GET。用户接口使用 `Authorization: Bearer <token>`；管理接口同样使用 token，且角色必须是 ADMIN。
+公开：注册、登录、商品 GET、分类 GET。用户接口使用 `Authorization: Bearer <token>`；管理接口同样使用 token，且角色必须是 ADMIN。**携带 token 的请求必须签名**，规则见下文“请求签名”。
 
 成功 HTTP 200（创建和删除也为 200）：
 
@@ -12,7 +12,7 @@
 {"code":"OK","message":"success","data":{"id":1},"timestamp":"2026-11-11T08:00:00Z"}
 ```
 
-错误结构相同，`data=null`。400 `VALIDATION_ERROR`、401 `UNAUTHORIZED/INVALID_CREDENTIALS`、403 `FORBIDDEN`、404 `NOT_FOUND`、405 `METHOD_NOT_ALLOWED`、409 `CONFLICT/RETRYABLE_CONFLICT`、500 `INTERNAL_ERROR`。校验失败不会返回数据库错误或堆栈。针对死锁/锁等待导致的 409，可短暂退避并使用原幂等键重试；业务冲突不应盲目重试。
+错误结构相同，`data=null`。400 `VALIDATION_ERROR`、401 `UNAUTHORIZED/INVALID_CREDENTIALS/SIGNATURE_MISSING/SIGNATURE_EXPIRED/SIGNATURE_INVALID`、403 `FORBIDDEN`、404 `NOT_FOUND`、405 `METHOD_NOT_ALLOWED`、409 `CONFLICT/RETRYABLE_CONFLICT/NONCE_REPLAYED`、413 `PAYLOAD_TOO_LARGE`、500 `INTERNAL_ERROR`、503 `NONCE_STORE_UNAVAILABLE`。校验失败不会返回数据库错误或堆栈。针对死锁/锁等待导致的 409，可短暂退避并使用原幂等键重试；业务冲突不应盲目重试。
 
 分页：`page=1`、`size=20`，size 范围 1..100，page 范围 1..1000000；按 id 倒序。响应 `data={"items":[],"total":0,"page":1,"size":20}`。
 
@@ -37,7 +37,7 @@
 | 方法 | 路径 | 权限 | 参数 | data 响应 |
 |---|---|---|---|---|
 | POST | /api/auth/register | 公开 | Credentials | User |
-| POST | /api/auth/login | 公开 | Credentials | `{token,tokenType,expiresAt,user}` |
+| POST | /api/auth/login | 公开 | Credentials | `{token,tokenType,signKey,expiresAt,user}` |
 | GET | /api/auth/me | 用户 | 无 | `{id,username,role}` |
 | POST | /api/auth/logout | 用户 | 无 | null，注销当前 token |
 | GET | /api/categories | 公开 | 无 | Category[] |
@@ -74,6 +74,76 @@
 | POST | /api/admin/orders/{id}/ship | 管理员 | Ship | OrderDetail |
 
 另有标准工具接口：`GET /actuator/health`、`GET /v3/api-docs`、Swagger UI。这些接口不使用业务响应封装。
+
+## 请求签名
+
+**范围**：凡是带 `Authorization: Bearer <token>` 的请求都必须签名，包括本来公开的商品、分类接口；不带 token 的公开请求不需要签名。签名用来防止请求被篡改和重放，也让单独泄露的 token 无法直接使用。它不加密内容，生产环境仍需 HTTPS。
+
+**签名密钥**：登录响应除 `token` 外还返回 `signKey`，两者属于同一次登录。服务端不存储 `signKey`，每次请求按 `Base64url(HMAC-SHA256(主密钥, "easymall-sign-key:v1:" + SHA256hex(token)))` 重新算出，所以注销或过期后它随 token 一起失效。HMAC 的密钥是 `signKey` 字符串的 UTF-8 字节。
+
+**请求头**
+
+| Header | 格式 |
+|---|---|
+| `X-Timestamp` | Unix 毫秒时间戳，与服务器时间相差不超过 300 秒 |
+| `X-Nonce` | 16..64 位 `[A-Za-z0-9-]`，每个请求不同，建议用 UUID |
+| `X-Signature` | `Base64(HMAC-SHA256(signKey, 待签名串))`，标准 Base64，带 `=` 填充 |
+
+**待签名串**：6 行，用 `\n` 连接，末尾没有换行。
+
+1. HTTP 方法，大写。
+2. 路径：不含 query，按实际发送的原样，不做解码。
+3. 规范化 query：每个参数先 URL 解码（`+` 视为空格），再按 RFC 3986 编码（只保留 `A-Z a-z 0-9 - . _ ~`，空格为 `%20`），然后按编码后的 key 排序，key 相同再按 value 排序，用 `&` 连接成 `k=v`。没有值的参数写成 `k=`，没有 query 时为空行。
+4. `X-Timestamp` 的值。
+5. `X-Nonce` 的值。
+6. 请求体原始字节的 SHA-256 小写 hex。没有请求体时为空串的哈希 `e3b0c442…b855`。不要重新序列化 JSON，必须对实际发送的字节做哈希。
+
+**示例**（[RequestSignatureTest](../src/test/java/com/easymall/RequestSignatureTest.java) 用同一组数据校验，可用于对照自测）
+
+```text
+signKey   = Ver7QLhO--GJ1ab3CvMofdHM8jQqZnE5jIbQuDsQAYA
+请求       = POST /api/orders?size=20&keyword=%E6%89%8B%E6%9C%BA+%E5%A3%B3&page=1&a=*~
+请求体     = {"addressId":1,"items":[{"productId":2,"quantity":1}],"clearCart":false}
+X-Timestamp = 1731400000000
+X-Nonce     = 3f9c2a7e-1b4d-4c8e-9a51-6d2e8f0b7c33
+
+待签名串：
+POST
+/api/orders
+a=%2A~&keyword=%E6%89%8B%E6%9C%BA%20%E5%A3%B3&page=1&size=20
+1731400000000
+3f9c2a7e-1b4d-4c8e-9a51-6d2e8f0b7c33
+c781224df34eebf5d8ca5418bb8c66eea80e37a07519542e82b4b6eded67f8e2
+
+X-Signature = 8DkZP0eshi5HRcfSutrAudOeKFe/KLMO9IWcuqFoxJw=
+```
+
+**服务端校验顺序**：请求头格式 → 时间戳窗口 → 读取请求体（上限 64KB）→ 重算签名并做恒定时间比较 → 查询 token → 记录 nonce。签名校验不需要查库，伪造或未签名的请求在查库之前就被拒绝。nonce 只在 token 有效且签名正确后才记录，所以错误请求不会占用 nonce。nonce 按 token 隔离，保存到 `X-Timestamp + 300 秒`，之后同样的请求会因时间戳过期被拒绝。
+
+| 情况 | HTTP | code |
+|---|---|---|
+| 带 token 但缺少签名头，或格式不对 | 401 | `SIGNATURE_MISSING` |
+| 时间戳超出 ±300 秒 | 401 | `SIGNATURE_EXPIRED` |
+| 签名不匹配（方法、路径、query、请求体被改，或用错 signKey） | 401 | `SIGNATURE_INVALID` |
+| 签名正确但 token 已注销或过期 | 401 | `UNAUTHORIZED` |
+| 同一 token 重复使用 nonce | 409 | `NONCE_REPLAYED` |
+| 请求体超过 64KB | 413 | `PAYLOAD_TOO_LARGE` |
+| nonce 存储（Redis 模式）不可用 | 503 | `NONCE_STORE_UNAVAILABLE` |
+
+**和幂等键的分工**：签名防止的是篡改和重放；`Idempotency-Key` 防止的是业务上的重复提交。客户端因超时重试下单或支付时，应该重新签名（新的时间戳和 nonce），但沿用原来的 `Idempotency-Key`，这样只会生成一笔订单或支付。
+
+**配置**（`app.signature.*`）
+
+| 配置 | 环境变量 | 默认 | 说明 |
+|---|---|---|---|
+| enabled | `SIGNATURE_ENABLED` | true | 设为 false 时只校验 token，登录仍返回 signKey |
+| master-key | `SIGN_MASTER_KEY` | 空 | 至少 32 个字符。为空时进程启动时随机生成，重启后需要重新登录，多实例之间也不能共用 token |
+| max-skew | | 300s | 时间戳允许的偏差，也是 nonce 的保留时间 |
+| max-body-size | | 64KB | 签名请求的请求体上限 |
+| nonce-store | `SIGN_NONCE_STORE` | memory | memory 适用于单实例；redis 供多实例共享。Redis 出错时拒绝请求（503），不会跳过校验 |
+| memory-nonce-capacity | | 1000000 | 内存模式下最多保存的 nonce 数，满了返回 503 |
+
+**客户端实现**：[Swagger 注入脚本](../src/main/resources/swagger/request-signing.js)（浏览器 Web Crypto）、[benchmark.cjs](../scripts/benchmark.cjs)（Node）、[prepare-load-data.ps1](../scripts/prepare-load-data.ps1)（PowerShell）、[purchase.jmx](purchase.jmx)（JMeter Groovy）、Postman 集合级 Pre-request Script、[测试用 SignedRequests](../src/test/java/com/easymall/SignedRequests.java)（Java）。
 
 ## 响应对象字段
 

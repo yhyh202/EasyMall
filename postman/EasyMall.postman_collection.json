@@ -2,7 +2,7 @@
   "info": {
     "name": "EasyMall Complete API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "按文件夹顺序执行；覆盖全部 36 个业务方法/路径及幂等和权限场景。每次创建独立测试数据，订单和商品历史保留。"
+    "description": "按文件夹顺序执行；覆盖全部 36 个业务方法/路径及幂等和权限场景。每次创建独立测试数据，订单和商品历史保留。携带 token 的请求由集合级 Pre-request Script 自动签名，签名密钥来自登录响应的 signKey。"
   },
   "item": [
     {
@@ -83,7 +83,8 @@
                   "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
                   "const result = pm.response.json();",
                   "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
-                  "if (result.code === 'OK') pm.environment.set('userToken', result.data.token);"
+                  "if (result.code === 'OK') pm.environment.set('userToken', result.data.token);",
+                  "if (result.code === 'OK') pm.environment.set('userSignKey', result.data.signKey);"
                 ]
               }
             }
@@ -145,7 +146,8 @@
                   "pm.test('HTTP 200', function() { pm.response.to.have.status(200); });",
                   "const result = pm.response.json();",
                   "pm.test('Business OK', function() { pm.expect(result.code).to.eql('OK'); });",
-                  "if (result.code === 'OK') pm.environment.set('adminToken', result.data.token);"
+                  "if (result.code === 'OK') pm.environment.set('adminToken', result.data.token);",
+                  "if (result.code === 'OK') pm.environment.set('adminSignKey', result.data.signKey);"
                 ]
               }
             }
@@ -1548,6 +1550,32 @@
           ]
         },
         {
+          "name": "未签名的 token 请求应拒绝",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', function() { pm.response.to.have.status(401); });",
+                  "const result = pm.response.json();",
+                  "pm.test('SIGNATURE_MISSING', function() { pm.expect(result.code).to.eql('SIGNATURE_MISSING'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "注销",
           "request": {
             "method": "POST",
@@ -1600,6 +1628,44 @@
           ]
         }
       ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Requests with 'Authorization: Bearer <token>' are signed with the signKey from the same login (docs/API.md).",
+          "// Requests whose name contains '未签名' are sent unsigned on purpose.",
+          "const auth = pm.request.headers.get('Authorization');",
+          "if (auth && !pm.info.requestName.includes('未签名')) {",
+          "  const value = pm.variables.replaceIn(auth);",
+          "  if (value.startsWith('Bearer ')) {",
+          "    const token = value.slice(7);",
+          "    const signKey = token === pm.environment.get('userToken') ? pm.environment.get('userSignKey')",
+          "      : token === pm.environment.get('adminToken') ? pm.environment.get('adminSignKey') : undefined;",
+          "    if (!signKey) throw new Error('No signKey for this token: run the matching login request first.');",
+          "    const url = pm.variables.replaceIn(pm.request.url.toString());",
+          "    const match = url.match(/^[a-z][a-z0-9+.-]*:\\/\\/[^\\/?#]+([^?#]*)(?:\\?([^#]*))?/i);",
+          "    const path = (match && match[1]) || '/';",
+          "    const rfc3986 = s => encodeURIComponent(s).replace(/[!'()*]/g, ch => '%' + ch.charCodeAt(0).toString(16).toUpperCase());",
+          "    const decode = s => decodeURIComponent(s.replace(/\\+/g, ' '));",
+          "    const query = ((match && match[2]) || '').split('&').filter(Boolean).map(part => {",
+          "      const i = part.indexOf('=');",
+          "      return [rfc3986(decode(i < 0 ? part : part.slice(0, i))), rfc3986(decode(i < 0 ? '' : part.slice(i + 1)))];",
+          "    }).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0).map(p => p.join('=')).join('&');",
+          "    const body = pm.request.body && pm.request.body.mode === 'raw' ? pm.variables.replaceIn(pm.request.body.raw || '') : '';",
+          "    const timestamp = String(Date.now());",
+          "    const nonce = pm.variables.replaceIn('{{$guid}}');",
+          "    const canonical = [pm.request.method.toUpperCase(), path, query, timestamp, nonce, CryptoJS.SHA256(body).toString(CryptoJS.enc.Hex)].join('\\n');",
+          "    pm.request.headers.upsert({ key: 'X-Timestamp', value: timestamp });",
+          "    pm.request.headers.upsert({ key: 'X-Nonce', value: nonce });",
+          "    pm.request.headers.upsert({ key: 'X-Signature', value: CryptoJS.HmacSHA256(canonical, signKey).toString(CryptoJS.enc.Base64) });",
+          "  }",
+          "}"
+        ]
+      }
     }
   ]
 }

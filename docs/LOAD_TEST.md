@@ -9,11 +9,11 @@ $env:ADMIN_PASSWORD='DemoAdmin123!' # demo 示例；MySQL 使用实际管理员�
 powershell -ExecutionPolicy Bypass -File scripts/prepare-load-data.ps1 -Users 100 -BaseUrl http://localhost:8080
 ```
 
-脚本新建专用分类、商品（库存为用户数×100）、独立用户及地址，并导出 `data/jmeter-users.csv`。列为 `username,password,token,addressId,productId`。令牌有效 12 小时；CSV 含凭证，应保存在本地。每次使用新 RunId，脚本不清空已有数据；重复指定同一 RunId 会因唯一约束失败。数据准备涉及 BCrypt，耗时不应计入购买接口延迟。
+脚本新建专用分类、商品（库存为用户数×100）、独立用户及地址，并导出 `data/jmeter-users.csv`。列为 `username,password,token,addressId,productId,signKey`，`signKey` 用于给同一行 token 的请求签名。令牌有效 12 小时；CSV 含凭证，应保存在本地。每次使用新 RunId，脚本不清空已有数据；重复指定同一 RunId 会因唯一约束失败。数据准备涉及 BCrypt，耗时不应计入购买接口延迟。
 
 ## 随附模板
 
-`docs/purchase.jmx` 使用 JMeter 标准组件，无第三方插件。默认 10 并发、1 次循环、5 秒启动间隔，每次循环从 CSV 取一个独立用户，下单后支付。CSV 不循环，耗尽即停止线程。默认接口 `http://localhost:8080`，数量 1。
+`docs/purchase.jmx` 使用 JMeter 标准组件，无第三方插件。默认 10 并发、1 次循环、5 秒启动间隔，每次循环从 CSV 取一个独立用户，下单后支付。线程组级 JSR223 前置处理器（Groovy）给每个请求计算 `X-Timestamp`、`X-Nonce`、`X-Signature`，规则见 [API.md](API.md#请求签名)；新增的采样器放在同一线程组下会自动签名。CSV 不循环，耗尽即停止线程。默认接口 `http://localhost:8080`，数量 1。
 
 ```powershell
 jmeter -n -t docs/purchase.jmx -Jhost=localhost -Jport=8080 -Jprotocol=http -Jthreads=10 -Jloops=1 -Jramp=5 -Jusers=data/jmeter-users.csv -l data/results.jtl -e -o data/report

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "EasyMall REST API",
-    "description": "商品/分类 GET 及注册登录公开；其他接口使用 Bearer token。下单、支付、调库存需要 Idempotency-Key。数据库响应字段使用 snake_case，请求字段使用 camelCase。",
+    "description": "商品/分类 GET 及注册登录公开；其他接口使用 Bearer token。携带 token 的请求必须用登录返回的 signKey 签名（X-Timestamp、X-Nonce、X-Signature，规则见 docs/API.md）；本页面登录后会自动授权并签名。下单、支付、调库存需要 Idempotency-Key。数据库响应字段使用 snake_case，请求字段使用 camelCase。",
     "version": "1.0.0"
   },
   "servers": [
@@ -555,7 +555,7 @@
         "tags": [
           "auth-controller"
         ],
-        "summary": "登录并获得 12 小时 Bearer token",
+        "summary": "登录并获得 12 小时 Bearer token 及签名用的 signKey",
         "operationId": "login",
         "requestBody": {
           "content": {
@@ -1616,6 +1616,7 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
+        "description": "登录得到的 token。Swagger 页面会用同一次登录的 signKey 自动签名",
         "scheme": "bearer"
       }
     }

@@ -40,6 +40,18 @@ app:
   admin-password: ${ADMIN_PASSWORD:}
   seed-data: ${SEED_DATA:false}
   token-hours: 12
+  signature:
+    # Every request that carries a Bearer token must be signed with the signKey returned by login (see docs/API.md).
+    enabled: ${SIGNATURE_ENABLED:true}
+    # Derives each login's signKey; at least 32 characters. Empty: a random key per process,
+    # so users log in again after a restart and multiple instances cannot share tokens.
+    master-key: ${SIGN_MASTER_KEY:}
+    # Accepted difference between X-Timestamp and server time; nonces are kept for the same period.
+    max-skew: 300s
+    max-body-size: 64KB
+    # memory: single instance. redis: shared across instances; a Redis error rejects signed requests with 503.
+    nonce-store: ${SIGN_NONCE_STORE:memory}
+    memory-nonce-capacity: 1000000
   search-cache:
     # Caches the total of the public product search (GET /api/products) in Redis.
     enabled: ${SEARCH_CACHE_ENABLED:false}

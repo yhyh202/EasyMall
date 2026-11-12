@@ -1,0 +1,2878 @@
+{
+  "startedAt": "2026-11-12T09:28:47.635372+00:00",
+  "model": "closed-loop HTTP/1.1 keep-alive, no retries",
+  "seconds": 20,
+  "warmSeconds": 3,
+  "levels": [
+    32,
+    64,
+    128
+  ],
+  "environment": {
+    "sameHost": true,
+    "buyers": 128,
+    "stockedProducts": 129,
+    "catalogRows": 10000,
+    "signatureEnabled": true,
+    "nonceStore": "memory",
+    "searchCacheEnabled": false,
+    "connectionPool": 20,
+    "appHeapMb": 384,
+    "bufferPoolMb": 256,
+    "logicalCpus": 24,
+    "python": "3.13.9",
+    "mysql": "8.0.34",
+    "innodbFlushLogAtTrxCommit": 1,
+    "syncBinlog": 1,
+    "logBin": true
+  },
+  "results": [
+    {
+      "name": "product_public",
+      "concurrency": 32,
+      "ok": 80232,
+      "fail": 0,
+      "requests": 80232,
+      "throughput": 4010.5199268802294,
+      "elapsedSeconds": 20.005386199991335,
+      "statuses": {
+        "200": 80232
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 6.953300005989149,
+        "p95": 17.4230999982683,
+        "p99": 24.55069999268744,
+        "max": 65.74109999928623
+      },
+      "warmupRequests": 12974,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 40,
+            "totalMs": 8.9552,
+            "rowsExamined": 40
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 4.5378,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.4705,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.3045,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 137.4121585948526,
+      "consistency": null
+    },
+    {
+      "name": "product_public",
+      "concurrency": 64,
+      "ok": 74084,
+      "fail": 0,
+      "requests": 74084,
+      "throughput": 3701.9633662835513,
+      "elapsedSeconds": 20.01208349999797,
+      "statuses": {
+        "200": 74084
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 15.095599999767728,
+        "p95": 37.858700001379475,
+        "p99": 52.36940000031609,
+        "max": 113.6638000025414
+      },
+      "warmupRequests": 11948,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 40,
+            "totalMs": 9.5063,
+            "rowsExamined": 40
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9809,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.4031,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2694,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 139.70733482835408,
+      "consistency": null
+    },
+    {
+      "name": "product_public",
+      "concurrency": 128,
+      "ok": 68924,
+      "fail": 0,
+      "requests": 68924,
+      "throughput": 3441.1682377745365,
+      "elapsedSeconds": 20.029244499994093,
+      "statuses": {
+        "200": 68924
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 32.254600009764545,
+        "p95": 82.83650000521448,
+        "p99": 114.85179999726824,
+        "max": 321.81799999671057
+      },
+      "warmupRequests": 9844,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 38,
+            "totalMs": 9.8489,
+            "rowsExamined": 38
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.0769,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3325,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.3161,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 159.70571921127674,
+      "consistency": null
+    },
+    {
+      "name": "product_authenticated",
+      "concurrency": 32,
+      "ok": 57842,
+      "fail": 0,
+      "requests": 57842,
+      "throughput": 2891.0679176640724,
+      "elapsedSeconds": 20.007139800000004,
+      "statuses": {
+        "200": 57842
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 9.732500009704381,
+        "p95": 23.734199989121407,
+        "p99": 32.42030000546947,
+        "max": 67.49539999873377
+      },
+      "warmupRequests": 9245,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 57879,
+            "totalMs": 12081.4346,
+            "rowsExamined": 57876
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.0162,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3738,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2731,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 5.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 130.51224105900872,
+      "consistency": null
+    },
+    {
+      "name": "product_authenticated",
+      "concurrency": 64,
+      "ok": 52162,
+      "fail": 0,
+      "requests": 52162,
+      "throughput": 2606.3168231873383,
+      "elapsedSeconds": 20.013683500001207,
+      "statuses": {
+        "200": 52162
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 21.645199987688102,
+        "p95": 52.442099986365065,
+        "p99": 72.04970000020694,
+        "max": 148.56309999595396
+      },
+      "warmupRequests": 8682,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 52194,
+            "totalMs": 12214.4753,
+            "rowsExamined": 52190
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9619,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3635,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2904,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 0.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 137.63429455634764,
+      "consistency": null
+    },
+    {
+      "name": "product_authenticated",
+      "concurrency": 128,
+      "ok": 48950,
+      "fail": 0,
+      "requests": 48950,
+      "throughput": 2443.5239589024536,
+      "elapsedSeconds": 20.0325434999977,
+      "statuses": {
+        "200": 48950
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 46.167000007699244,
+        "p95": 112.85859999770764,
+        "p99": 153.93119999498595,
+        "max": 288.58920000493526
+      },
+      "warmupRequests": 7378,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 48964,
+            "totalMs": 12071.2222,
+            "rowsExamined": 48968
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.8882,
+            "rowsExamined": 79
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.2944,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2286,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 3.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 2.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 10.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 1.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 151.94014001061157,
+      "consistency": null
+    },
+    {
+      "name": "catalog_search",
+      "concurrency": 32,
+      "ok": 5269,
+      "fail": 0,
+      "requests": 5269,
+      "throughput": 262.11743949761524,
+      "elapsedSeconds": 20.1016765999957,
+      "statuses": {
+        "200": 5269
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 112.20580000372138,
+        "p95": 188.68859999929555,
+        "p99": 241.69379999511875,
+        "max": 353.36130000359844
+      },
+      "warmupRequests": 740,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT COUNT ( * ) FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ?",
+            "count": 5267,
+            "totalMs": 396769.1994,
+            "rowsExamined": 53369701
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ? ORDER BY `id` DESC LIMIT ? OFFSET ?",
+            "count": 5269,
+            "totalMs": 2610.8246,
+            "rowsExamined": 105380
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 36,
+            "totalMs": 8.7742,
+            "rowsExamined": 36
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.939,
+            "rowsExamined": 81
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.462,
+            "rowsExamined": 2
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3139,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 10.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 9.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 10.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 9.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 14.068006793023546,
+      "consistency": null
+    },
+    {
+      "name": "catalog_search",
+      "concurrency": 64,
+      "ok": 5369,
+      "fail": 0,
+      "requests": 5369,
+      "throughput": 265.5044826492644,
+      "elapsedSeconds": 20.22188080000342,
+      "statuses": {
+        "200": 5369
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 165.52860000228975,
+        "p95": 509.48090000019874,
+        "p99": 750.9299000084866,
+        "max": 1817.11859999632
+      },
+      "warmupRequests": 850,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT COUNT ( * ) FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ?",
+            "count": 5364,
+            "totalMs": 398934.0063,
+            "rowsExamined": 54372472
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ? ORDER BY `id` DESC LIMIT ? OFFSET ?",
+            "count": 5368,
+            "totalMs": 2592.5325,
+            "rowsExamined": 107380
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 32,
+            "totalMs": 7.6332,
+            "rowsExamined": 32
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.95,
+            "rowsExamined": 81
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.2982,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2414,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 42.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 42.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 42.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 40.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 14.293370994005446,
+      "consistency": null
+    },
+    {
+      "name": "catalog_search",
+      "concurrency": 128,
+      "ok": 5420,
+      "fail": 0,
+      "requests": 5420,
+      "throughput": 264.9956840661338,
+      "elapsedSeconds": 20.453163300000597,
+      "statuses": {
+        "200": 5420
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 297.8572000138229,
+        "p95": 1094.3052999937208,
+        "p99": 1508.2881999987876,
+        "max": 3540.6572000065353
+      },
+      "warmupRequests": 908,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT COUNT ( * ) FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ?",
+            "count": 5419,
+            "totalMs": 403559.3065,
+            "rowsExamined": 54878922
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE ACTIVE = TRUE AND NAME LIKE ? AND `category_id` = ? ORDER BY `id` DESC LIMIT ? OFFSET ?",
+            "count": 5419,
+            "totalMs": 2645.7556,
+            "rowsExamined": 108400
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 24,
+            "totalMs": 5.6802,
+            "rowsExamined": 24
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 0.9712,
+            "rowsExamined": 81
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3071,
+            "rowsExamined": 3
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.2316,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 106.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 106.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 23.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 14.131366641126206,
+      "consistency": null
+    },
+    {
+      "name": "order_distributed",
+      "concurrency": 32,
+      "ok": 33395,
+      "fail": 0,
+      "requests": 33395,
+      "throughput": 1668.2323923099427,
+      "elapsedSeconds": 20.018194200005382,
+      "statuses": {
+        "200": 33395
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 17.512400008854456,
+        "p95": 31.00980000454001,
+        "p99": 53.765199991175905,
+        "max": 93.43629999784753
+      },
+      "warmupRequests": 4393,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "COMMIT",
+            "count": 33249,
+            "totalMs": 181638.666,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 33372,
+            "totalMs": 10264.5808,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 33376,
+            "totalMs": 9560.4454,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 33361,
+            "totalMs": 8946.6032,
+            "rowsExamined": 33379
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 33393,
+            "totalMs": 7690.7989,
+            "rowsExamined": 33415
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 66649,
+            "totalMs": 6786.9429,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 33368,
+            "totalMs": 6429.7068,
+            "rowsExamined": 33379
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 33364,
+            "totalMs": 6332.2737,
+            "rowsExamined": 33384
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 33364,
+            "totalMs": 5919.0283,
+            "rowsExamined": 33378
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 33359,
+            "totalMs": 5885.5039,
+            "rowsExamined": 33391
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.0951,
+            "rowsExamined": 95
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.4115,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 13.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 3.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 10.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 12.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 1.0
+        },
+        {
+          "hikaricp.connections.active": 16.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 14.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 10.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 18.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 14.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 5.0
+        },
+        {
+          "hikaricp.connections.active": 18.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 1.0
+        },
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 116.95826258554436,
+      "consistency": {
+        "orders": 37788,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_distributed",
+      "concurrency": 64,
+      "ok": 34004,
+      "fail": 0,
+      "requests": 34004,
+      "throughput": 1698.4908171829265,
+      "elapsedSeconds": 20.020125900002313,
+      "statuses": {
+        "200": 34004
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 35.02269998716656,
+        "p95": 63.36879999435041,
+        "p99": 92.63060000375845,
+        "max": 240.03099999390543
+      },
+      "warmupRequests": 5319,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "COMMIT",
+            "count": 33878,
+            "totalMs": 207193.112,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 33958,
+            "totalMs": 11652.9602,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 33965,
+            "totalMs": 9354.1134,
+            "rowsExamined": 33987
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 33962,
+            "totalMs": 9249.0446,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 33998,
+            "totalMs": 7849.4995,
+            "rowsExamined": 34025
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 33963,
+            "totalMs": 6912.556,
+            "rowsExamined": 33999
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 67879,
+            "totalMs": 6835.8846,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 33979,
+            "totalMs": 6412.2471,
+            "rowsExamined": 33996
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 33977,
+            "totalMs": 6044.8464,
+            "rowsExamined": 33981
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 33966,
+            "totalMs": 5929.7955,
+            "rowsExamined": 33996
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.1573,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 1.0525,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 29.0
+        },
+        {
+          "hikaricp.connections.active": 16.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 14.0
+        },
+        {
+          "hikaricp.connections.active": 15.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 14.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 27.0
+        },
+        {
+          "hikaricp.connections.active": 14.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 18.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 36.0
+        },
+        {
+          "hikaricp.connections.active": 16.0,
+          "hikaricp.connections.pending": 36.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 31.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 40.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 28.0
+        },
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 35.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 26.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 40.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 114.48095917750531,
+      "consistency": {
+        "orders": 39323,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_distributed",
+      "concurrency": 128,
+      "ok": 35185,
+      "fail": 0,
+      "requests": 35185,
+      "throughput": 1755.189430683668,
+      "elapsedSeconds": 20.04626930000086,
+      "statuses": {
+        "200": 35185
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 68.94349999492988,
+        "p95": 126.06200001027901,
+        "p99": 168.3579000091413,
+        "max": 395.2741000102833
+      },
+      "warmupRequests": 5283,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 0,
+          "Innodb_row_lock_waits": 0,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "COMMIT",
+            "count": 35034,
+            "totalMs": 209104.403,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 35141,
+            "totalMs": 11113.7302,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 35138,
+            "totalMs": 10017.2484,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 35122,
+            "totalMs": 9784.1119,
+            "rowsExamined": 35165
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 35180,
+            "totalMs": 8000.1865,
+            "rowsExamined": 35197
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 35143,
+            "totalMs": 7245.5494,
+            "rowsExamined": 35175
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 70235,
+            "totalMs": 6962.6674,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 35150,
+            "totalMs": 6520.6301,
+            "rowsExamined": 35170
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 35137,
+            "totalMs": 6190.0145,
+            "rowsExamined": 35161
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 35156,
+            "totalMs": 6024.8897,
+            "rowsExamined": 35174
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.1976,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3756,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 23.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 54.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 45.0
+        },
+        {
+          "hikaricp.connections.active": 14.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 74.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 92.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 99.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 63.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 66.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 22.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 54.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 14.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 16.0
+        },
+        {
+          "hikaricp.connections.active": 17.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 100.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 94.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 100.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 81.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 133.72815921487407,
+      "consistency": {
+        "orders": 40468,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_hotspot",
+      "concurrency": 32,
+      "ok": 4647,
+      "fail": 0,
+      "requests": 4647,
+      "throughput": 230.4848783343837,
+      "elapsedSeconds": 20.161843300011242,
+      "statuses": {
+        "200": 4647
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 132.39379999868106,
+        "p95": 192.04979999631178,
+        "p99": 226.00240001338534,
+        "max": 281.62130000418983
+      },
+      "warmupRequests": 653,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 373009,
+          "Innodb_row_lock_waits": 4646,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4647,
+            "totalMs": 374077.69,
+            "rowsExamined": 4647
+          },
+          {
+            "sql": "COMMIT",
+            "count": 4647,
+            "totalMs": 9942.4591,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4647,
+            "totalMs": 1193.0974,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4647,
+            "totalMs": 1118.2152,
+            "rowsExamined": 4647
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4647,
+            "totalMs": 977.429,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4687,
+            "totalMs": 974.0942,
+            "rowsExamined": 4687
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 9294,
+            "totalMs": 873.422,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4647,
+            "totalMs": 780.7387,
+            "rowsExamined": 4647
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4647,
+            "totalMs": 772.7288,
+            "rowsExamined": 4647
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4647,
+            "totalMs": 733.0784,
+            "rowsExamined": 4647
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.0942,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3097,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 2.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 4.0,
+          "hikaricp.connections.pending": 0.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 12.011293122559529,
+      "consistency": {
+        "orders": 5300,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_hotspot",
+      "concurrency": 64,
+      "ok": 4555,
+      "fail": 0,
+      "requests": 4555,
+      "throughput": 224.2632414630568,
+      "elapsedSeconds": 20.3109523000021,
+      "statuses": {
+        "200": 4555
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 275.78310000535566,
+        "p95": 375.4093000025023,
+        "p99": 497.78770000557415,
+        "max": 598.9987999928417
+      },
+      "warmupRequests": 726,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 376033,
+          "Innodb_row_lock_waits": 4554,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4555,
+            "totalMs": 377123.5288,
+            "rowsExamined": 4555
+          },
+          {
+            "sql": "COMMIT",
+            "count": 4555,
+            "totalMs": 9971.6991,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4555,
+            "totalMs": 1244.7245,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4555,
+            "totalMs": 1130.8171,
+            "rowsExamined": 4555
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4589,
+            "totalMs": 1014.4842,
+            "rowsExamined": 4589
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4555,
+            "totalMs": 961.6264,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 9110,
+            "totalMs": 898.8173,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4555,
+            "totalMs": 802.358,
+            "rowsExamined": 4555
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4555,
+            "totalMs": 788.5558,
+            "rowsExamined": 4555
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4555,
+            "totalMs": 735.8164,
+            "rowsExamined": 4555
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.9106,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.427,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 12.845502100956066,
+      "consistency": {
+        "orders": 5281,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_hotspot",
+      "concurrency": 128,
+      "ok": 3987,
+      "fail": 0,
+      "requests": 3987,
+      "throughput": 193.6695538472265,
+      "elapsedSeconds": 20.586612200000673,
+      "statuses": {
+        "200": 3987
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 639.131299991277,
+        "p95": 875.4291000077501,
+        "p99": 1105.340599999181,
+        "max": 1430.715099995723
+      },
+      "warmupRequests": 710,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 380975,
+          "Innodb_row_lock_waits": 3986,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 3987,
+            "totalMs": 381998.107,
+            "rowsExamined": 3987
+          },
+          {
+            "sql": "COMMIT",
+            "count": 3987,
+            "totalMs": 10710.1782,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 3987,
+            "totalMs": 1164.9246,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 3987,
+            "totalMs": 1045.3124,
+            "rowsExamined": 3987
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4013,
+            "totalMs": 935.3836,
+            "rowsExamined": 4013
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 3987,
+            "totalMs": 929.1753,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 7974,
+            "totalMs": 841.5192,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 3987,
+            "totalMs": 743.5454,
+            "rowsExamined": 3987
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 3987,
+            "totalMs": 738.4217,
+            "rowsExamined": 3987
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 3987,
+            "totalMs": 690.2867,
+            "rowsExamined": 3987
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 2.3104,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.646,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 13.736206092735866,
+      "consistency": {
+        "orders": 4697,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_same_user",
+      "concurrency": 32,
+      "ok": 4113,
+      "fail": 0,
+      "requests": 4113,
+      "throughput": 204.43445928156262,
+      "elapsedSeconds": 20.11891740000283,
+      "statuses": {
+        "200": 4113
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 147.05939999839757,
+        "p95": 219.03639999800362,
+        "p99": 258.8660000037635,
+        "max": 294.4692000019131
+      },
+      "warmupRequests": 623,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 377191,
+          "Innodb_row_lock_waits": 4112,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4113,
+            "totalMs": 378087.8352,
+            "rowsExamined": 4113
+          },
+          {
+            "sql": "COMMIT",
+            "count": 4113,
+            "totalMs": 8510.5963,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4113,
+            "totalMs": 939.7512,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4113,
+            "totalMs": 916.4311,
+            "rowsExamined": 4113
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4151,
+            "totalMs": 821.3173,
+            "rowsExamined": 4151
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4113,
+            "totalMs": 731.6136,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 8226,
+            "totalMs": 710.866,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4113,
+            "totalMs": 655.4954,
+            "rowsExamined": 4113
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4113,
+            "totalMs": 653.9766,
+            "rowsExamined": 4113
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4113,
+            "totalMs": 627.2739,
+            "rowsExamined": 4113
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.1064,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.3763,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 18.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 19.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 11.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 12.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 11.571191256874306,
+      "consistency": {
+        "orders": 4736,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_same_user",
+      "concurrency": 64,
+      "ok": 4294,
+      "fail": 0,
+      "requests": 4294,
+      "throughput": 211.12386988491298,
+      "elapsedSeconds": 20.338770800008206,
+      "statuses": {
+        "200": 4294
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 289.4610999937868,
+        "p95": 389.6167999919271,
+        "p99": 448.7560999987181,
+        "max": 582.6350999996066
+      },
+      "warmupRequests": 693,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 380770,
+          "Innodb_row_lock_waits": 4293,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4294,
+            "totalMs": 381687.4564,
+            "rowsExamined": 4294
+          },
+          {
+            "sql": "COMMIT",
+            "count": 4294,
+            "totalMs": 8385.951,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4294,
+            "totalMs": 992.7755,
+            "rowsExamined": 4294
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4294,
+            "totalMs": 984.9882,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4328,
+            "totalMs": 834.5163,
+            "rowsExamined": 4328
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4294,
+            "totalMs": 737.4903,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 8588,
+            "totalMs": 736.2285,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4294,
+            "totalMs": 696.9412,
+            "rowsExamined": 4294
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4294,
+            "totalMs": 670.926,
+            "rowsExamined": 4294
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4294,
+            "totalMs": 652.6609,
+            "rowsExamined": 4294
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.2445,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT `VARIABLE_NAME` , `VARIABLE_VALUE` FROM `performance_schema` . `global_status` WHERE `VARIABLE_NAME` IN (...)",
+            "count": 1,
+            "totalMs": 0.5088,
+            "rowsExamined": 3
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 43.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 44.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 10.523662096263068,
+      "consistency": {
+        "orders": 4987,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    },
+    {
+      "name": "order_same_user",
+      "concurrency": 128,
+      "ok": 4369,
+      "fail": 0,
+      "requests": 4369,
+      "throughput": 211.24097195660644,
+      "elapsedSeconds": 20.682540699999663,
+      "statuses": {
+        "200": 4369
+      },
+      "failureExamples": [],
+      "latencyMs": {
+        "p50": 594.8492000024999,
+        "p95": 730.681300003198,
+        "p99": 996.9820999976946,
+        "max": 1268.450000003213
+      },
+      "warmupRequests": 735,
+      "db": {
+        "status": {
+          "Innodb_row_lock_time": 387420,
+          "Innodb_row_lock_waits": 4368,
+          "Threads_running": 0
+        },
+        "topSql": [
+          {
+            "sql": "SELECT `id` FROM `mall_user` WHERE `id` = ? FOR UPDATE",
+            "count": 4369,
+            "totalMs": 388379.7423,
+            "rowsExamined": 4369
+          },
+          {
+            "sql": "COMMIT",
+            "count": 4369,
+            "totalMs": 8347.4312,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "INSERT INTO `mall_order` ( `user_id` , `request_key` , `request_hash` , STATUS , `total_amount` , `recipient` , `phone` , `address_detail` ) VALUES (...)",
+            "count": 4369,
+            "totalMs": 1008.2053,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "UPDATE `product` SET `stock` = `stock` - ? WHERE `id` = ? AND `stock` >= ?",
+            "count": 4369,
+            "totalMs": 974.9634,
+            "rowsExamined": 4369
+          },
+          {
+            "sql": "SELECT `u` . `id` , `u` . `username` , `u` . `role` FROM `auth_token` `t` JOIN `mall_user` `u` ON `t` . `user_id` = `u` . `id` WHERE `t` . `token_hash` = ? AND `t` . `expires_at` > NOW",
+            "count": 4397,
+            "totalMs": 835.6752,
+            "rowsExamined": 4397
+          },
+          {
+            "sql": "INSERT INTO `stock_log` ( `product_id` , `order_id` , `actor_id` , `delta` , `reason` ) VALUES (...)",
+            "count": 4369,
+            "totalMs": 790.569,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SET `autocommit` = ?",
+            "count": 8738,
+            "totalMs": 758.6586,
+            "rowsExamined": 0
+          },
+          {
+            "sql": "SELECT * FROM `product` WHERE `id` = ? FOR UPDATE",
+            "count": 4369,
+            "totalMs": 727.0659,
+            "rowsExamined": 4369
+          },
+          {
+            "sql": "SELECT * FROM `address` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4369,
+            "totalMs": 697.893,
+            "rowsExamined": 4369
+          },
+          {
+            "sql": "SELECT * FROM `mall_order` WHERE `id` = ? AND `user_id` = ?",
+            "count": 4369,
+            "totalMs": 679.883,
+            "rowsExamined": 4369
+          },
+          {
+            "sql": "SELECT `DIGEST` , `COUNT_STAR` , `SUM_TIMER_WAIT` , `SUM_ROWS_EXAMINED` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE SCHEMA_NAME = ? AND `DIGEST` IS NOT NULL",
+            "count": 1,
+            "totalMs": 1.1989,
+            "rowsExamined": 98
+          },
+          {
+            "sql": "SELECT @@`version_comment` LIMIT ?",
+            "count": 2,
+            "totalMs": 0.4585,
+            "rowsExamined": 2
+          }
+        ]
+      },
+      "samples": [
+        {
+          "hikaricp.connections.active": 8.0,
+          "hikaricp.connections.pending": 0.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 108.0
+        },
+        {
+          "hikaricp.connections.active": 20.0,
+          "hikaricp.connections.pending": 107.0
+        }
+      ],
+      "monitorErrors": [],
+      "driverCpuPercentOfOneCore": 11.25527254979926,
+      "consistency": {
+        "orders": 5104,
+        "stockLedgerMismatches": 0,
+        "reservationMismatches": 0
+      }
+    }
+  ],
+  "updatedAt": "2026-11-12T09:36:03.410428+00:00",
+  "finishedAt": "2026-11-12T09:36:03.413568+00:00",
+  "notes": [
+    "18 groups: 32/64/128 concurrency, 3s warm-up plus 20s measured per group",
+    "Independent MySQL instance; DEBUG disabled; signature enabled; Redis search cache disabled",
+    "Python threaded driver used after Node exited natively with code -1073740791 before producing measurements",
+    "Same-host closed-loop short test; driver CPU may constrain fast endpoints; not a production capacity limit",
+    "Order scenarios create PENDING orders only; payment throughput was not measured"
+  ],
+  "totals": {
+    "measuredRequests": 526801,
+    "errors": 0,
+    "monitorErrors": 0,
+    "ordersIncludingWarmup": 147684
+  }
+}

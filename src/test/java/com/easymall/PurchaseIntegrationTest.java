@@ -27,22 +27,29 @@ class PurchaseIntegrationTest {
     @Autowired OrderService orders;
 
     record Buyer(long id,String token,long address) {}
+    /** token → signKey of every login made by this test, used to sign HTTP calls that carry the token. */
+    final Map<String,String> signKeys=new ConcurrentHashMap<>();
     String key() { return UUID.randomUUID().toString(); }
     JsonNode call(MockHttpServletRequestBuilder request,String token,Object body,int expected) throws Exception {
-        if(token!=null) request.header("Authorization","Bearer "+token);
+        if(token!=null) request.header("Authorization","Bearer "+token).with(SignedRequests.signed(signKeys.get(token)));
         if(body!=null) request.contentType("application/json").content(json.writeValueAsBytes(body));
         var result=mvc.perform(request).andExpect(status().is(expected)).andReturn();
         return json.readTree(result.getResponse().getContentAsByteArray());
     }
+    String login(Requests.Credentials c) {
+        var login=auth.login(c); String token=(String)login.get("token");
+        signKeys.put(token,(String)login.get("signKey"));
+        return token;
+    }
     Buyer buyer() {
         String username="u"+key().replace("-","");
         var c=new Requests.Credentials(username,"BuyerPass123!");
-        long user=Db.number(auth.register(c),"id"); String token=(String)auth.login(c).get("token");
+        long user=Db.number(auth.register(c),"id"); String token=login(c);
         long address=Db.number(customers.saveAddress(user,null,new Requests.Address("测试用户","13800138000","测试省市路 1 号",true)),"id");
         return new Buyer(user,token,address);
     }
     long admin() { return Db.number(db.one("SELECT id FROM mall_user WHERE username='admin'"),"id"); }
-    String adminToken() { return (String)auth.login(new Requests.Credentials("admin","DemoAdmin123!")).get("token"); }
+    String adminToken() { return login(new Requests.Credentials("admin","DemoAdmin123!")); }
     long product(int stock) {
         long category=Db.number(catalog.categories().getFirst(),"id");
         long id=Db.number(catalog.saveProduct(null,new Requests.Product(category,"test-"+key(),"test",new BigDecimal("12.30"),true)),"id");

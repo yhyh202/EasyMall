@@ -17,7 +17,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-benchmark.ps1 -
 
 启动脚本默认仅监听 `127.0.0.1`，MySQL 使用 13327 端口，应用使用 18081 端口。端口占用时脚本停止，可以通过 `-DatabasePort` 和 `-AppPort` 指定其他端口。Java 堆上限 384 MB、InnoDB buffer pool 256 MB、应用连接池 20；MySQL 保持默认提交刷盘设置，未通过放松持久性来提高成绩。只在隔离应用中开放需要鉴权的 Actuator metrics；业务源码和普通启动配置不变。
 
-初始化数据：64 个买家（独立 token、地址）、65 个库存充足的测试商品，以及 10000 个不参与购买的零库存查询商品。用户注册和登录初始化不计入下单计时。所有订单和库存流水保留，验证时按本轮幂等键前缀统计。停机后不自动删除数据。
+初始化数据：64 个买家（独立 token、signKey、地址）、65 个库存充足的测试商品，以及 10000 个不参与购买的零库存查询商品。用户注册和登录初始化不计入下单计时。所有订单和库存流水保留，验证时按本轮幂等键前缀统计。停机后不自动删除数据。带 token 的请求由脚本签名（docs/API.md“请求签名”），签名计算计入请求延迟；加入签名之前生成的 `dataset.json` 没有 signKey，需要新建环境重新准备数据。
 
 `data/` 已被 Git 忽略，其中包含临时数据库密码、测试 token 和数据库文件，不应提交或公开。对外报告只保留去除凭证后的结果 JSON。
 
@@ -26,7 +26,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-benchmark.ps1 -
 | 参数名称 | 场景 | 用途 |
 |---|---|---|
 | product_public | 不带 token 的热门商品详情 | 公开读取基线 |
-| product_authenticated | 带 token 的相同商品详情 | 对照鉴权额外查询 |
+| product_authenticated | 带 token 的相同商品详情 | 对照鉴权额外查询和签名校验 |
 | catalog_search | 1 万条匹配记录上的关键词、分类、分页查询 | 分析 LIKE、COUNT 和扫描成本 |
 | order_distributed | 不同用户购买各自的商品 | 分散写入基线 |
 | order_hotspot | 不同用户购买同一个商品 | 定位商品行锁竞争 |

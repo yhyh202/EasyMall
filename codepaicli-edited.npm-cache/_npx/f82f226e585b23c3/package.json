@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "newman": "^6.2.1"
+  },
+  "_npx": {
+    "packages": [
+      "newman@6.2.1"
+    ]
+  }
+}

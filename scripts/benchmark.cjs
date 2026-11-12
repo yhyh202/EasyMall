@@ -24,14 +24,31 @@ const levels = (args['--levels'] || '1,8,32,64').split(',').map(Number);
 if (![seconds,warmSeconds,...levels].every(Number.isFinite) || seconds<1 || warmSeconds<0 || levels.some(c=>c<1 || c>128 || !Number.isInteger(c))) throw new Error('Invalid load parameters.');
 const datasetFile = path.join(dir,'dataset.json');
 let data;
+// token → signKey from the same login. Every request that carries a token must be signed (docs/API.md).
+const signKeys = new Map();
+const rfc3986 = s => encodeURIComponent(s).replace(/[!'()*]/g,c=>'%'+c.charCodeAt(0).toString(16).toUpperCase());
+function canonicalQuery(search) {
+  return [...new URLSearchParams(search)].map(([k,v])=>[rfc3986(k),rfc3986(v)])
+    .sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:a[1]<b[1]?-1:a[1]>b[1]?1:0).map(p=>p.join('=')).join('&');
+}
+function signHeaders(method,target,token,payload) {
+  const signKey=signKeys.get(token);
+  if(!signKey) throw new Error('No signKey for token; the dataset predates request signing, prepare a new one.');
+  const timestamp=String(Date.now()),nonce=crypto.randomUUID();
+  const bodyHash=crypto.createHash('sha256').update(payload||'').digest('hex');
+  const canonical=[method,target.pathname,canonicalQuery(target.search),timestamp,nonce,bodyHash].join('\n');
+  return {'X-Timestamp':timestamp,'X-Nonce':nonce,'X-Signature':crypto.createHmac('sha256',signKey).update(canonical).digest('base64')};
+}
+function remember(login) { signKeys.set(login.token,login.signKey); return login; }
 function request(method, url, token, body, key) {
   return new Promise((resolve,reject) => {
     const payload=body ? JSON.stringify(body) : null;
+    const target=new URL(url,base);
     const headers={};
-    if(token) headers.Authorization='Bearer '+token;
+    if(token) Object.assign(headers,{Authorization:'Bearer '+token},signHeaders(method,target,token,payload));
     if(key) headers['Idempotency-Key']=key;
     if(payload) {headers['Content-Type']='application/json';headers['Content-Length']=Buffer.byteLength(payload);}
-    const req=http.request(new URL(url,base),{method,headers,agent},res=>{
+    const req=http.request(target,{method,headers,agent},res=>{
       const chunks=[];
       res.on('data',chunk=>chunks.push(chunk));
       res.on('error',reject);
@@ -53,8 +70,8 @@ async function sql(query) {
 const sqlRows=async query => {const s=await sql(query); return s ? s.split(/\r?\n/).map(line=>line.split('\t')) : [];};
 async function prepare() {
   if(fs.existsSync(datasetFile)) throw new Error('Dataset exists; use a new isolated environment or run without --prepare.');
-  const admin=await api('POST','/api/auth/login',null,{username:'admin',password:'DemoAdmin123!'});
-  data={runId:crypto.randomUUID(),adminToken:admin.token,users:[],products:[]};
+  const admin=remember(await api('POST','/api/auth/login',null,{username:'admin',password:'DemoAdmin123!'}));
+  data={runId:crypto.randomUUID(),adminToken:admin.token,adminSignKey:admin.signKey,users:[],products:[]};
   const category=await api('POST','/api/admin/categories',data.adminToken,{name:'Benchmark-'+data.runId});
   data.categoryId=category.id;
   for(let i=0;i<65;i++) {
@@ -65,9 +82,9 @@ async function prepare() {
   for(let i=0;i<64;i++) {
     const username='bench_'+i,password='BenchmarkBuyer123!';
     await api('POST','/api/auth/register',null,{username,password});
-    const login=await api('POST','/api/auth/login',null,{username,password});
+    const login=remember(await api('POST','/api/auth/login',null,{username,password}));
     const address=await api('POST','/api/addresses',login.token,{recipient:'Benchmark buyer',phone:'13800138000',detail:'Isolated benchmark address',isDefault:true});
-    data.users.push({id:login.user.id,username,password,token:login.token,addressId:address.id});
+    data.users.push({id:login.user.id,username,password,token:login.token,signKey:login.signKey,addressId:address.id});
   }
   // Ten thousand catalog-only rows make list/search work representative of nontrivial data size.
   // These rows start with zero stock and are never ordered; all purchasable stock uses API ledger writes.
@@ -150,7 +167,12 @@ async function verify(prefix,expected) {
   return {orders:expected,stockLedgerMismatches:mismatch,reservationMismatches:reservationMismatch};
 }
 async function main() {
-  if(args['--prepare']==='true') await prepare(); else data=JSON.parse(fs.readFileSync(datasetFile,'utf8'));
+  if(args['--prepare']==='true') await prepare();
+  else {
+    data=JSON.parse(fs.readFileSync(datasetFile,'utf8'));
+    signKeys.set(data.adminToken,data.adminSignKey);
+    for(const u of data.users) signKeys.set(u.token,u.signKey);
+  }
   if(args['--prepare-only']==='true') return;
   const selected=(args['--scenarios'] || 'product_public,product_authenticated,catalog_search,order_distributed,order_hotspot,order_same_user').split(',');
   if(selected.some(n=>!scenarios[n])) throw new Error('Unknown scenario.');

@@ -23,7 +23,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="One CSV row per buyer iteration" enabled="true">
           <stringProp name="filename">${__P(users,data/jmeter-users.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames">username,password,token,addressId,productId</stringProp>
+          <stringProp name="variableNames">username,password,token,addressId,productId,signKey</stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
@@ -44,6 +44,43 @@
             </elementProp>
           </collectionProp>
         </HeaderManager>
+        <hashTree />
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Sign every request (X-Timestamp, X-Nonce, X-Signature)" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">// Signing rules: docs/API.md. Uses the signKey CSV column that belongs to this row&apos;s token.
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import org.apache.jmeter.protocol.http.control.Header
+
+def utf8 = StandardCharsets.UTF_8
+def enc = { String s -&gt; URLEncoder.encode(s, &apos;UTF-8&apos;).replace(&apos;+&apos;, &apos;%20&apos;).replace(&apos;*&apos;, &apos;%2A&apos;).replace(&apos;%7E&apos;, &apos;~&apos;) }
+def dec = { String s -&gt; URLDecoder.decode(s, &apos;UTF-8&apos;) }
+def url = sampler.getUrl()
+def rawQuery = url.getQuery()  // java.net.URL returns path and query undecoded
+def query = rawQuery ? rawQuery.split(&apos;&amp;&apos;).findAll { it }.collect { p -&gt;
+    def i = p.indexOf(&apos;=&apos;)
+    [enc(dec(i &lt; 0 ? p : p.substring(0, i))), enc(dec(i &lt; 0 ? &apos;&apos; : p.substring(i + 1)))]
+}.sort { a, b -&gt; (a[0] &lt;=&gt; b[0]) ?: (a[1] &lt;=&gt; b[1]) }.collect { it.join(&apos;=&apos;) }.join(&apos;&amp;&apos;) : &apos;&apos;
+def arguments = sampler.getArguments()
+def body = sampler.getPostBodyRaw() &amp;&amp; arguments.getArgumentCount() &gt; 0 ? arguments.getArgument(0).getValue() : &apos;&apos;
+def timestamp = String.valueOf(System.currentTimeMillis())
+def nonce = UUID.randomUUID().toString()
+def bodyHash = MessageDigest.getInstance(&apos;SHA-256&apos;).digest(body.getBytes(utf8)).encodeHex().toString()
+def canonical = [sampler.getMethod().toUpperCase(), url.getPath(), query, timestamp, nonce, bodyHash].join(&apos;\n&apos;)
+def mac = Mac.getInstance(&apos;HmacSHA256&apos;)
+mac.init(new SecretKeySpec(vars.get(&apos;signKey&apos;).getBytes(utf8), &apos;HmacSHA256&apos;))
+def signature = mac.doFinal(canonical.getBytes(utf8)).encodeBase64().toString()
+def headers = sampler.getHeaderManager()
+[&apos;X-Timestamp&apos;, &apos;X-Nonce&apos;, &apos;X-Signature&apos;].each { headers.removeHeaderNamed(it) }
+headers.add(new Header(&apos;X-Timestamp&apos;, timestamp))
+headers.add(new Header(&apos;X-Nonce&apos;, nonce))
+headers.add(new Header(&apos;X-Signature&apos;, signature))</stringProp>
+        </JSR223PreProcessor>
         <hashTree />
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create order" enabled="true">
           <stringProp name="HTTPSampler.domain">${__P(host,localhost)}</stringProp>
